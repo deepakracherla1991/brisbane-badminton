@@ -1,0 +1,42 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ink: #0b0b0c;
+  --color-ink-2: #141416;
+  --color-ink-3: #1d1d21;
+  --color-line: #2a2a30;
+  --color-brand: #d62828;
+  --color-brand-600: #b91f1f;
+  --color-brand-300: #ff6b6b;
+  --color-court: #1f6f5c;
+  --color-shuttle: #f4f1ea;
+
+  --font-display: var(--font-oswald), "Arial Narrow", Arial, sans-serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+@layer base {
+  html { scroll-behavior: smooth; }
+  body {
+    @apply bg-ink text-zinc-200 font-sans antialiased;
+  }
+  h1, h2, h3, h4 {
+    @apply font-display uppercase tracking-wide text-white;
+  }
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-brand-300;
+  }
+  [id] { scroll-margin-top: 6rem; }
+}
+
+@layer components {
+  .container-x { @apply mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8; }
+  .section { @apply py-16 sm:py-24; }
+  .eyebrow { @apply font-display text-sm font-semibold uppercase tracking-[0.2em] text-brand-300; }
+  .card { @apply rounded-2xl border border-line bg-ink-2; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+}
