@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Mail, MapPin } from "lucide-react";
+import { Mail, MapPin, Phone } from "lucide-react";
 import { Logo } from "./Logo";
 import { FacebookIcon, InstagramIcon, WhatsAppIcon } from "./SocialIcons";
 import { site } from "@/content/site";
@@ -72,6 +72,12 @@ export function Footer() {
               <a href={contact.mapsUrl} target="_blank" rel="noopener noreferrer" className="flex gap-2 text-zinc-300 hover:text-white">
                 <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-brand-300" />
                 {contact.address}
+              </a>
+            </li>
+            <li>
+              <a href={`tel:${contact.phones[0].number}`} className="flex gap-2 text-zinc-300 hover:text-white">
+                <Phone className="mt-0.5 h-4 w-4 shrink-0 text-brand-300" />
+                {contact.phones[0].display}
               </a>
             </li>
             <li>

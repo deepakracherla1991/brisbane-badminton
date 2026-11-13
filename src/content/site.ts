@@ -57,8 +57,15 @@ export const site = {
 
   contact: {
     address: "39 Quilton Pl, Crestmead QLD 4132",
+    addressFull: "39 Quilton Pl, Crestmead QLD 4132, Australia",
+    /** Searching by business name shows the Google Business pin, name and rating. */
+    mapsQuery: "Brisbane Badminton, 39 Quilton Pl, Crestmead QLD 4132",
     mapsUrl:
-      "https://www.google.com/maps/search/?api=1&query=39+Quilton+Pl+Crestmead+QLD+4132",
+      "https://www.google.com/maps/search/?api=1&query=Brisbane+Badminton+39+Quilton+Pl+Crestmead+QLD+4132",
+    phones: [
+      { label: "General enquiries", number: "+61433300506", display: "+61 433 300 506" },
+      { label: "Academy", number: "+61433300506", display: "+61 433 300 506" },
+    ],
     email: "admin@badmintonbrisbane.com.au",
     whatsapp: "+61433300506",
     whatsappDisplay: "0433 300 506",
