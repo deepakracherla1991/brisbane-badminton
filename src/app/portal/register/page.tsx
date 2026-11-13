@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { AuthCard } from "@/components/portal/AuthCard";
+import { AuthOptions } from "@/components/portal/AuthOptions";
+import { isGoogleAuthEnabled } from "@/lib/supabase/config";
 import { ActionForm, SubmitButton, inputClass, labelClass } from "@/components/portal/forms";
 import { getCurrentProfile } from "@/lib/portal/auth";
 import { signUp } from "../auth-actions";
@@ -23,6 +25,7 @@ export default async function RegisterPage() {
         </>
       }
     >
+      <AuthOptions googleEnabled={isGoogleAuthEnabled} emailLabel="Sign up with email">
       <ActionForm action={signUp} className="space-y-4" resetOnSuccess>
         <label className={labelClass}>
           Your full name
@@ -51,6 +54,7 @@ export default async function RegisterPage() {
           Create account
         </SubmitButton>
       </ActionForm>
+      </AuthOptions>
     </AuthCard>
   );
 }

@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { AuthCard } from "@/components/portal/AuthCard";
+import { AuthOptions } from "@/components/portal/AuthOptions";
+import { isGoogleAuthEnabled } from "@/lib/supabase/config";
 import { ActionForm, SubmitButton, inputClass, labelClass } from "@/components/portal/forms";
 import { getCurrentProfile } from "@/lib/portal/auth";
 import { safeNext } from "@/lib/portal/format";
@@ -29,9 +31,14 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
     >
       {error && (
         <p role="alert" className="mb-4 rounded-lg border border-brand/40 bg-brand/10 px-3 py-2 text-sm text-red-200">
-          {error === "link" ? "That link has expired or was already used. Please try again." : "Something went wrong. Please try again."}
+          {error === "link"
+            ? "That link has expired or was already used. Please try again."
+            : error === "oauth"
+              ? "Google sign-in didn't complete. Please try again, or continue with email."
+              : "Something went wrong. Please try again."}
         </p>
       )}
+      <AuthOptions googleEnabled={isGoogleAuthEnabled} next={nextPath}>
       <ActionForm action={signIn} className="space-y-4">
         <input type="hidden" name="next" value={nextPath} />
         <label className={labelClass}>
@@ -49,6 +56,7 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
           </Link>
         </div>
       </ActionForm>
+      </AuthOptions>
     </AuthCard>
   );
 }

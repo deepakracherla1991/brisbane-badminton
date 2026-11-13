@@ -80,6 +80,18 @@ There's no online payment: enrolments start as **Awaiting payment** and staff ma
    ```
    The **Admin** tab then appears in the portal.
 
+### "Continue with Google" (optional)
+
+The sign-in and sign-up pages show a **Continue with Google** button once `NEXT_PUBLIC_AUTH_GOOGLE=true` is set in `.env.local`. Turn it on only after this setup, or visitors will see an error page:
+
+1. In [Google Cloud Console](https://console.cloud.google.com), create a project (or use an existing one).
+2. **APIs & Services → OAuth consent screen**: set it up as **External**, with the app name "Brisbane Badminton", your support email and your logo.
+3. **APIs & Services → Credentials → Create credentials → OAuth client ID**, type **Web application**. Under **Authorised redirect URIs** add your Supabase callback URL, shown in Supabase under **Authentication → Sign In / Providers → Google** (it looks like `https://<project-ref>.supabase.co/auth/v1/callback`).
+4. Copy the **Client ID** and **Client secret** into Supabase **Authentication → Sign In / Providers → Google**, enable it and save.
+5. Add `NEXT_PUBLIC_AUTH_GOOGLE=true` to `.env.local` and restart `npm run dev`.
+
+Google doesn't share a mobile number, so people who sign up with Google are asked to add one on the **Account** page before their first enrolment.
+
 ### Emails
 
 - **Sign-up confirmation and password reset** emails are sent by Supabase. Its built-in sender is limited to a few emails per hour, so before going live set up custom SMTP under **Authentication → Emails → SMTP Settings** (Resend provides SMTP).

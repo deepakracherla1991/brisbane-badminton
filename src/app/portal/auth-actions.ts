@@ -101,3 +101,19 @@ export async function signOut() {
   revalidatePath("/portal", "layout");
   redirect("/portal/login");
 }
+
+/** Starts "Continue with Google": sends the visitor to Google, then back to /portal/auth/confirm. */
+export async function signInWithGoogle(fd: FormData) {
+  const supabase = await createClient();
+  const origin = await getOrigin();
+  const next = safeNext(fd.get("next"));
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: "google",
+    options: {
+      redirectTo: `${origin}/portal/auth/confirm?next=${encodeURIComponent(next)}`,
+      queryParams: { prompt: "select_account" },
+    },
+  });
+  if (error || !data.url) redirect("/portal/login?error=oauth");
+  redirect(data.url);
+}

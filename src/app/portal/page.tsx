@@ -85,6 +85,16 @@ export default async function PortalHome() {
         <ButtonLink href="/portal/classes">Enrol in a class</ButtonLink>
       </div>
 
+      {!profile.phone && (
+        <div className="card flex flex-col gap-4 border-amber-500/40 p-6 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <h2 className="text-xl font-bold">Add your mobile number</h2>
+            <p className="mt-1 text-sm text-zinc-400">We need a contact number before you can enrol, so our coaches can reach you.</p>
+          </div>
+          <ButtonLink href="/portal/account">Add mobile</ButtonLink>
+        </div>
+      )}
+
       {!students?.length && (
         <div className="card flex flex-col gap-4 border-brand/40 p-6 sm:flex-row sm:items-center sm:justify-between">
           <div>

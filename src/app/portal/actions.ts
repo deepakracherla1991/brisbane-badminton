@@ -82,6 +82,7 @@ export async function enrol(_: FormState, fd: FormData): Promise<FormState> {
   const classId = str(fd, "class_id");
   const studentId = str(fd, "student_id");
   if (!studentId) return { error: "Choose who you're enrolling." };
+  if (!profile.phone) return { error: "Please add your mobile number on the Account page before enrolling, so our coaches can reach you." };
 
   const supabase = await createClient();
   const { data, error } = await supabase.rpc("enrol_student", { p_class_id: classId, p_student_id: studentId }).single<Enrolment>();

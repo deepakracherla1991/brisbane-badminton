@@ -11,6 +11,9 @@ export async function GET(request: NextRequest) {
   const tokenHash = searchParams.get("token_hash");
   const type = searchParams.get("type") as EmailOtpType | null;
 
+  // Provider errors (e.g. the visitor cancelled Google sign-in) come back as ?error=...
+  if (searchParams.get("error")) return NextResponse.redirect(new URL("/portal/login?error=oauth", origin));
+
   const supabase = await createClient();
   let ok = false;
   if (code) {
