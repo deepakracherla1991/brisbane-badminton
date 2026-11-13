@@ -16,15 +16,12 @@ export type Program = {
   image?: string;
 };
 
-// TODO: confirm coach names and spellings (taken from photo file names).
+export const coachesIntro =
+  "All coaches are qualified, accredited, and active players, bringing both technical expertise and on-court experience to every session.";
+
 export const coaches = [
-  { name: "Pavan", image: "/images/coaches/pavan-2.jpg" },
-  { name: "Srinivas", image: "/images/coaches/srinivas-2.jpg" },
-  { name: "Ankit", image: "/images/coaches/ankit.jpg" },
-  { name: "Apoorv", image: "/images/coaches/apoorv.jpg" },
   { name: "Arthur Lee", image: "/images/coaches/arthur-lee.jpg" },
-  { name: "Chinmay Dhawale", image: "/images/coaches/chinmay-dhawale.jpg" },
-  { name: "Jacqueline Zhang", image: "/images/coaches/jacqueline-zhang.jpg" },
+  { name: "Apoorv Mathur", image: "/images/coaches/apoorv.jpg" },
 ];
 
 export const gallery = [

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { ButtonLink, CheckList, CtaBand, Media, PageHero, SectionHeading, TodoNote } from "@/components/ui";
-import { coaches, site } from "@/content/site";
+import { coaches, coachesIntro, site } from "@/content/site";
 
 export const metadata: Metadata = {
   title: "Academy",
@@ -66,18 +66,17 @@ export default function AcademyPage() {
 
       <section id="coaches" className="section">
         <div className="container-x">
-          <SectionHeading eyebrow="Coaching team" title="Meet the coaches" />
-          <ul className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+          <SectionHeading eyebrow="Coaching team" title="Meet our coaches" intro={coachesIntro} />
+          <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {coaches.map((c) => (
-              <li key={c.name} className="card overflow-hidden">
-                <div className="relative aspect-[4/5]">
-                  <Image src={c.image} alt={`Coach ${c.name}`} fill sizes="(min-width: 1024px) 25vw, 50vw" className="object-cover object-top" />
+              <li key={c.name} className="card flex flex-col items-center px-6 py-8 text-center">
+                <div className="relative h-40 w-40 overflow-hidden rounded-full ring-4 ring-brand ring-offset-4 ring-offset-ink-2">
+                  <Image src={c.image} alt={`Coach ${c.name}`} fill sizes="160px" className="object-cover object-top" />
                 </div>
-                <p className="px-4 py-3 font-display text-lg uppercase tracking-wide text-white">{c.name}</p>
+                <p className="mt-6 font-display text-2xl font-bold uppercase tracking-wide text-white">{c.name}</p>
               </li>
             ))}
           </ul>
-          <TodoNote>Confirm coach names and add roles or qualifications.</TodoNote>
         </div>
       </section>
 
