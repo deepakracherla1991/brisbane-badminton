@@ -44,6 +44,19 @@ src/
   content/site.ts  all site content
 ```
 
+## Logos
+
+Brand logos live in `public/logos/`:
+
+| File | Use on |
+|---|---|
+| `logo-full-white.png` | dark backgrounds (header, footer) |
+| `logo-full-color.png` | light backgrounds |
+| `logo-mono-white.png` | photos or brand-red backgrounds |
+| `emblem-red.png`, `emblem-white.png` | emblem only |
+
+Use `<Logo variant="dark" | "light" | "mono" />` from `src/components/Logo.tsx`. The browser-tab icon (`src/app/icon.png`), Apple touch icon and social share image (`src/app/opengraph-image.png`) are generated from these.
+
 ## Contact form
 
 The form on `/contact` currently opens the visitor's email app with the message pre-filled. To receive messages directly, swap it for a form service (Fillout, Formspree, etc.) or a Next.js route handler.

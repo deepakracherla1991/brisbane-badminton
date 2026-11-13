@@ -228,7 +228,13 @@ export function CtaBand({
     <section className="section">
       <div className="container-x">
         <div className="relative overflow-hidden rounded-3xl bg-brand px-6 py-14 text-center sm:px-12 sm:py-20">
-          <CourtLines className="absolute inset-0 h-full w-full opacity-15" />
+          <Image
+            src="/logos/emblem-white.png"
+            alt=""
+            width={259}
+            height={259}
+            className="pointer-events-none absolute -right-16 -bottom-20 h-72 w-72 opacity-15 sm:h-96 sm:w-96"
+          />
           <div className="relative mx-auto max-w-2xl">
             <h2 className="text-3xl font-bold sm:text-5xl">{title}</h2>
             <p className="mt-4 text-lg text-white/85">{body}</p>

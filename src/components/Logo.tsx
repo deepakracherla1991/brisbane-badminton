@@ -1,18 +1,23 @@
-export function Logo({ className = "" }: { className?: string }) {
-  return (
-    <span className={`inline-flex items-center gap-2.5 ${className}`}>
-      <svg viewBox="0 0 64 64" className="h-9 w-9 shrink-0" aria-hidden="true">
-        <rect width="64" height="64" rx="14" fill="#d62828" />
-        <g transform="rotate(-35 32 32)">
-          <path d="M24 13h16l-4 22h-8z" fill="#fff" />
-          <path d="M28 13v22M32 13v22M36 13v22" stroke="#d62828" strokeWidth="1.5" />
-          <circle cx="32" cy="41" r="7" fill="#0b0b0c" />
-        </g>
-      </svg>
-      <span className="font-display leading-none uppercase text-white">
-        <span className="block text-[11px] tracking-[0.3em] text-zinc-400">Brisbane</span>
-        <span className="block text-lg font-bold tracking-wider">Badminton</span>
-      </span>
-    </span>
-  );
+import Image from "next/image";
+
+const logos = {
+  /** Red emblem, white text: for dark backgrounds (default). */
+  dark: { src: "/logos/logo-full-white.png", width: 1072, height: 259 },
+  /** Red emblem, black text: for light backgrounds. */
+  light: { src: "/logos/logo-full-color.png", width: 1078, height: 259 },
+  /** All white: for photos and brand-red backgrounds. */
+  mono: { src: "/logos/logo-mono-white.png", width: 1079, height: 259 },
+} as const;
+
+export function Logo({
+  variant = "dark",
+  className = "h-9 w-auto",
+  priority = false,
+}: {
+  variant?: keyof typeof logos;
+  className?: string;
+  priority?: boolean;
+}) {
+  const l = logos[variant];
+  return <Image src={l.src} width={l.width} height={l.height} alt="Brisbane Badminton" className={className} priority={priority} />;
 }

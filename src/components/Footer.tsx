@@ -16,7 +16,7 @@ export function Footer() {
     <footer className="border-t border-line bg-ink-2">
       <div className="container-x grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-4">
         <div className="space-y-4">
-          <Logo />
+          <Logo className="h-11 w-auto" />
           <p className="max-w-xs text-sm text-zinc-400">Queensland&apos;s first dedicated badminton venue.</p>
           <ul className="flex gap-2">
             {socials.map(({ href, label, Icon }) => (

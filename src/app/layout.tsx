@@ -19,7 +19,6 @@ export const metadata: Metadata = {
     description: site.description,
     locale: "en_AU",
   },
-  icons: { icon: "/icon.svg" },
 };
 
 export const viewport: Viewport = { themeColor: "#0b0b0c" };
@@ -30,6 +29,8 @@ const jsonLd = {
   name: site.name,
   description: site.description,
   url: site.url,
+  logo: `${site.url}/logos/logo-full-color.png`,
+  image: `${site.url}/images/gallery/main-page.jpg`,
   email: site.contact.email,
   telephone: site.contact.whatsapp,
   address: {

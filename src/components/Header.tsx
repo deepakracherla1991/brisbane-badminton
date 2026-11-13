@@ -26,7 +26,7 @@ export function Header() {
     <header className="sticky top-0 z-50 border-b border-line/80 bg-ink/85 backdrop-blur-md">
       <div className="container-x flex h-16 items-center justify-between gap-4">
         <Link href="/" aria-label={`${site.name} home`}>
-          <Logo />
+          <Logo priority className="h-8 w-auto sm:h-9" />
         </Link>
 
         <nav aria-label="Main" className="hidden lg:block">
