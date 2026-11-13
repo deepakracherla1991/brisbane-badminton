@@ -28,7 +28,7 @@ export default async function AccountPage() {
             </label>
             <label className={labelClass}>
               Mobile
-              <input name="phone" type="tel" maxLength={30} defaultValue={profile.phone ?? ""} autoComplete="tel" className={inputClass} />
+              <input name="phone" type="tel" required maxLength={30} defaultValue={profile.phone ?? ""} autoComplete="tel" className={inputClass} />
             </label>
           </div>
           <SubmitButton>Save details</SubmitButton>

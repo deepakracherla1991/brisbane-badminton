@@ -9,6 +9,8 @@ import type { FormState } from "@/lib/portal/types";
 
 const str = (fd: FormData, key: string) => String(fd.get(key) ?? "").trim();
 const isEmail = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+/** Loose phone check: 8–15 digits, allowing spaces, dashes, brackets and a leading +. */
+const isPhone = (v: string) => /^\+?[\d\s()-]+$/.test(v) && (v.match(/\d/g)?.length ?? 0) >= 8 && (v.match(/\d/g)?.length ?? 0) <= 15;
 
 /** Friendly wording for Supabase auth errors. */
 function authError(error: { message: string; status?: number; code?: string }): FormState {
@@ -26,6 +28,7 @@ export async function signUp(_: FormState, fd: FormData): Promise<FormState> {
   const password = String(fd.get("password") ?? "");
   if (!fullName) return { error: "Please enter your name." };
   if (!isEmail(email)) return { error: "Please enter a valid email address." };
+  if (!isPhone(phone)) return { error: "Please enter a valid mobile number." };
   if (password.length < 8) return { error: "Password must be at least 8 characters." };
   if (password !== String(fd.get("confirm") ?? "")) return { error: "Passwords don't match." };
 

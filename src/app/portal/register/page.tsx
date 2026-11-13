@@ -33,8 +33,8 @@ export default async function RegisterPage() {
           <input name="email" type="email" required autoComplete="email" className={inputClass} />
         </label>
         <label className={labelClass}>
-          Mobile <span className="text-zinc-500">(optional)</span>
-          <input name="phone" type="tel" maxLength={30} autoComplete="tel" className={inputClass} />
+          Mobile
+          <input name="phone" type="tel" required maxLength={30} autoComplete="tel" placeholder="04xx xxx xxx" className={inputClass} />
         </label>
         <div className="grid gap-4 sm:grid-cols-2">
           <label className={labelClass}>

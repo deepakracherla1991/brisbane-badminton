@@ -18,10 +18,12 @@ export async function updateProfile(_: FormState, fd: FormData): Promise<FormSta
   const profile = await requireUser("/portal/account");
   const fullName = str(fd, "full_name").slice(0, 120);
   if (!fullName) return { error: "Please enter your name." };
+  const phone = str(fd, "phone").slice(0, 30);
+  if (!/^\+?[\d\s()-]+$/.test(phone) || (phone.match(/\d/g)?.length ?? 0) < 8) return { error: "Please enter a valid mobile number." };
   const supabase = await createClient();
   const { error } = await supabase
     .from("profiles")
-    .update({ full_name: fullName, phone: str(fd, "phone").slice(0, 30) || null })
+    .update({ full_name: fullName, phone })
     .eq("id", profile.id);
   if (error) return { error: "Couldn't save your details. Please try again." };
   refresh();
