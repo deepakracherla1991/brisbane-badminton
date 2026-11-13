@@ -57,6 +57,16 @@ Brand logos live in `public/logos/`:
 
 Use `<Logo variant="dark" | "light" | "mono" />` from `src/components/Logo.tsx`. The browser-tab icon (`src/app/icon.png`), Apple touch icon and social share image (`src/app/opengraph-image.png`) are generated from these.
 
+## Chat assistant ("Birdie")
+
+A chat button in the bottom-right corner of every page opens **Birdie**, an AI assistant that answers visitor questions about the venue.
+
+- **Answers come from the site content.** The assistant's instructions are built from `src/content/site.ts` (`src/lib/assistant.ts`), so updating the site content updates what Birdie knows. It is told not to guess prices, times or details that aren't listed, and to point people to WhatsApp or the phone number instead.
+- **AI replies need an Anthropic API key.** Copy `.env.example` to `.env.local` and set `ANTHROPIC_API_KEY` (get one at https://console.anthropic.com), then restart `npm run dev`. On Vercel, add the same variable under Project → Settings → Environment Variables.
+- **Without a key** the chat still works using simple built-in answers for common questions (hours, prices, location, academy, club, etc.).
+- **Limits:** 20 questions per visitor per browser tab (shown as the counter), 800 characters per message, and a per-IP rate limit on `/api/chat`.
+- **Model:** Claude Opus 5.5 at low effort, with prompt caching on the instructions and automatic fallback to another model if a reply is declined. Change these in `src/app/api/chat/route.ts`; the name, welcome message, quick replies and limits are in `src/lib/assistant-config.ts`.
+
 ## Contact form
 
 The form on `/contact` currently opens the visitor's email app with the message pre-filled. To receive messages directly, swap it for a form service (Fillout, Formspree, etc.) or a Next.js route handler.
