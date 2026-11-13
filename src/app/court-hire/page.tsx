@@ -28,7 +28,11 @@ export default function CourtHirePage() {
 
       <section id="book" className="section">
         <div className="container-x">
-          <SectionHeading eyebrow="Rates" title="Simple, honest pricing" intro="Prices are per court, per hour. Up to four players per court." />
+          <SectionHeading
+            eyebrow="Rates"
+            title="Simple, honest pricing"
+            intro="Prices are per court, per hour, for up to four players. Weekend and public holiday prices are shown when you book."
+          />
           <ul className="grid gap-5 md:grid-cols-3">
             {site.courtHire.rates.map((r, i) => (
               <li key={r.label} className={`card flex flex-col p-7 ${i === 0 ? "border-brand/60 ring-1 ring-brand/30" : ""}`}>
@@ -39,7 +43,20 @@ export default function CourtHirePage() {
               </li>
             ))}
           </ul>
-          <TodoNote>Confirm peak/off-peak rates and times, and set links.bookCourt to the real booking system.</TodoNote>
+          <div className="card mt-6 flex flex-col gap-5 p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8">
+            <div>
+              <h3 className="text-2xl font-bold">Book online</h3>
+              <ol className="mt-3 list-decimal space-y-1 pl-5 text-sm text-zinc-300">
+                <li>Pick a day, then choose a free court and time.</li>
+                <li>Log in or register, then check out.</li>
+                <li>Have credit or a PlayOn voucher? Use the Credit and Redeem voucher links on the booking site.</li>
+              </ol>
+            </div>
+            <ButtonLink href={site.links.bookCourt} className="shrink-0">
+              See availability
+            </ButtonLink>
+          </div>
+          <TodoNote>Confirm weekend and public holiday rates.</TodoNote>
         </div>
       </section>
 
