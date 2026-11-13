@@ -51,8 +51,10 @@ const jsonLd = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en-AU" className={`${inter.variable} ${oswald.variable}`}>
-      <body className="flex min-h-screen flex-col">
+    // suppressHydrationWarning: browser extensions (e.g. Grammarly) add attributes to <html>/<body>
+    // before React loads. This only silences attribute mismatches on these two tags.
+    <html lang="en-AU" className={`${inter.variable} ${oswald.variable}`} suppressHydrationWarning>
+      <body className="flex min-h-screen flex-col" suppressHydrationWarning>
         <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded focus:bg-white focus:px-4 focus:py-2 focus:text-ink">
           Skip to content
         </a>
