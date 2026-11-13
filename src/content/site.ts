@@ -16,6 +16,28 @@ export type Program = {
   image?: string;
 };
 
+// TODO: confirm coach names and spellings (taken from photo file names).
+export const coaches = [
+  { name: "Pavan", image: "/images/coaches/pavan-2.jpg" },
+  { name: "Srinivas", image: "/images/coaches/srinivas-2.jpg" },
+  { name: "Ankit", image: "/images/coaches/ankit.jpg" },
+  { name: "Apoorv", image: "/images/coaches/apoorv.jpg" },
+  { name: "Arthur Lee", image: "/images/coaches/arthur-lee.jpg" },
+  { name: "Chinmay Dhawale", image: "/images/coaches/chinmay-dhawale.jpg" },
+  { name: "Jacqueline Zhang", image: "/images/coaches/jacqueline-zhang.jpg" },
+];
+
+export const gallery = [
+  { src: "/images/gallery/courts1.jpg", alt: "Nine courts under high ceilings" },
+  { src: "/images/academy/academy27jan.jpg", alt: "Academy players and coaches" },
+  { src: "/images/home/home2.jpg", alt: "Players on court" },
+  { src: "/images/socials/fbwall.jpg", alt: "Social players group photo" },
+  { src: "/images/gallery/location-building.jpg", alt: "Brisbane Badminton building in Crestmead" },
+  { src: "/images/academy/training2.jpg", alt: "Training session" },
+  { src: "/images/gallery/pro-shop2.jpg", alt: "Pro shop wall of racquets and apparel" },
+  { src: "/images/coaches/pavan.jpg", alt: "Coach-led drills at the net" },
+];
+
 export const site = {
   name: "Brisbane Badminton",
   tagline: "Built for badminton",
@@ -107,6 +129,7 @@ export const site = {
     programs: [
       {
         slug: "little-smashers",
+        image: "/images/academy/little-smashers.jpg",
         name: "Little Smashers",
         audience: "Young beginners",
         summary: "A fun first step into badminton for young kids, building coordination, footwork and a love of the game.",
@@ -114,6 +137,7 @@ export const site = {
       },
       {
         slug: "junior-squad",
+        image: "/images/academy/weekly-group-training.jpg",
         name: "Weekly Group Training",
         audience: "Juniors",
         summary: "Term-based group sessions that build technique, fitness and match play along a clear development pathway.",
@@ -121,6 +145,7 @@ export const site = {
       },
       {
         slug: "adult-terms",
+        image: "/images/academy/adults-terms.jpg",
         name: "Adult Term Classes",
         audience: "Adults",
         summary: "Never played, or getting back into it? Learn proper grips, strokes and footwork with coaches in a relaxed setting.",
@@ -128,6 +153,7 @@ export const site = {
       },
       {
         slug: "personal-training",
+        image: "/images/academy/personal-training-2.jpg",
         name: "Personal Training",
         audience: "All levels",
         summary: "One-on-one or small-group coaching tailored to your game, from technique fixes to tournament preparation.",
@@ -135,6 +161,7 @@ export const site = {
       },
       {
         slug: "sparring",
+        image: "/images/academy/sparring.jpg",
         name: "Sparring Sessions",
         audience: "Competitive players",
         summary: "High-intensity match practice against players at your level, with coach-led drills and feedback.",
@@ -142,6 +169,7 @@ export const site = {
       },
       {
         slug: "holiday-camps",
+        image: "/images/academy/kids-group-training.jpg",
         name: "School Holiday Camps",
         audience: "Juniors",
         summary: "Full or half-day camps during the school holidays. Coaching, games and plenty of court time.",

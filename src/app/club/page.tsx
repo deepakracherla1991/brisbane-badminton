@@ -20,6 +20,7 @@ export default function ClubPage() {
         eyebrow="Club"
         title="Join the club"
         intro="A QBA-affiliated club recognised by Badminton Australia, offering a safe, structured environment and real pathways into competitive badminton."
+        image="/images/club/club.jpg"
       >
         <ButtonLink href={site.links.clubJoin}>Register</ButtonLink>
       </PageHero>
@@ -30,7 +31,7 @@ export default function ClubPage() {
             <SectionHeading eyebrow="Membership benefits" title="Why join" />
             <CheckList items={site.club.points} />
           </div>
-          <Media alt="Club members" label="Club" tone="court" className="aspect-[4/3] rounded-3xl" />
+          <Media image="/images/club/club-banner.jpg" alt="Club members group photo" label="Club" tone="court" className="aspect-[4/3] rounded-3xl" />
         </div>
       </section>
 

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { CheckList, CtaBand, Media, PageHero, SectionHeading } from "@/components/ui";
-import { site } from "@/content/site";
+import { gallery, site } from "@/content/site";
 
 export const metadata: Metadata = {
   title: "About us",
@@ -21,6 +22,7 @@ export default function AboutPage() {
         eyebrow="About us"
         title="More than just courts"
         intro="Brisbane Badminton is Queensland's first dedicated badminton venue: a home for social players, juniors, coaches and competitors alike."
+        image="/images/gallery/courts3.jpg"
       />
 
       <section className="section">
@@ -42,7 +44,7 @@ export default function AboutPage() {
               items={["9 BWF-standard courts", "Open 7 days, year-round", "QBA-affiliated club", "PlayOn vouchers accepted"]}
             />
           </div>
-          <Media alt="Brisbane Badminton venue" label="Venue" className="aspect-[4/3] rounded-3xl" />
+          <Media image="/images/gallery/building.jpg" alt="Brisbane Badminton venue entrance in Crestmead" label="Venue" className="aspect-[4/3] rounded-3xl" />
         </div>
       </section>
 
@@ -55,6 +57,28 @@ export default function AboutPage() {
                 <span className="font-display text-4xl font-bold text-brand/70">{String(i + 1).padStart(2, "0")}</span>
                 <h3 className="mt-3 text-xl font-bold">{v.title}</h3>
                 <p className="mt-2 text-sm text-zinc-400">{v.body}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      <section className="section">
+        <div className="container-x">
+          <SectionHeading eyebrow="Gallery" title="Inside the venue" />
+          <ul className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
+            {gallery.map((g, i) => (
+              <li
+                key={g.src}
+                className={`relative overflow-hidden rounded-2xl bg-ink-2 ${i === 0 ? "col-span-2 row-span-2 aspect-square lg:aspect-auto" : "aspect-square"}`}
+              >
+                <Image
+                  src={g.src}
+                  alt={g.alt}
+                  fill
+                  sizes={i === 0 ? "(min-width: 1024px) 50vw, 100vw" : "(min-width: 1024px) 25vw, 50vw"}
+                  className="object-cover transition-transform duration-500 hover:scale-105"
+                />
               </li>
             ))}
           </ul>

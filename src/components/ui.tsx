@@ -62,16 +62,27 @@ export function PageHero({
   eyebrow,
   title,
   intro,
+  image,
   children,
 }: {
   eyebrow: string;
   title: string;
   intro: string;
+  /** Optional background photo. */
+  image?: string;
   children?: React.ReactNode;
 }) {
   return (
     <section className="relative overflow-hidden border-b border-line">
-      <CourtLines className="absolute inset-0 h-full w-full opacity-[0.07]" />
+      {image ? (
+        <>
+          <Image src={image} alt="" fill priority sizes="100vw" className="object-cover" />
+          <div className="absolute inset-0 bg-gradient-to-r from-ink via-ink/85 to-ink/40" />
+          <div className="absolute inset-0 bg-gradient-to-t from-ink/80 to-transparent" />
+        </>
+      ) : (
+        <CourtLines className="absolute inset-0 h-full w-full opacity-[0.07]" />
+      )}
       <div className="absolute inset-0 bg-gradient-to-br from-brand/20 via-transparent to-transparent" />
       <div className="container-x relative py-16 sm:py-24">
         <p className="eyebrow mb-4">{eyebrow}</p>

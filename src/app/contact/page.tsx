@@ -26,7 +26,7 @@ export default function ContactPage() {
 
   return (
     <>
-      <PageHero eyebrow="Contact" title="Get in touch" intro="Questions about bookings, coaching, the club or events? We're here to help." />
+      <PageHero eyebrow="Contact" title="Get in touch" intro="Questions about bookings, coaching, the club or events? We're here to help." image="/images/gallery/location-building.jpg" />
 
       <section className="section">
         <div className="container-x">

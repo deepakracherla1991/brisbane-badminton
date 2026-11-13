@@ -14,6 +14,7 @@ export default function SocialsPage() {
         eyebrow="Socials"
         title="Find your game"
         intro="Social sessions, leagues and community bookings for all ages and skill levels. Come alone or bring the crew."
+        image="/images/home/home1.jpg"
       >
         <ButtonLink href="/contact">Get involved</ButtonLink>
       </PageHero>
@@ -24,7 +25,7 @@ export default function SocialsPage() {
             <SectionHeading eyebrow="Everyone welcome" title="Play, meet people, have fun" />
             <CheckList items={site.socials.points} />
           </div>
-          <Media alt="Social badminton" label="Social" className="aspect-[4/3] rounded-3xl" />
+          <Media image="/images/socials/fbwall.jpg" alt="Social badminton players group photo" label="Social" className="aspect-[4/3] rounded-3xl" />
         </div>
       </section>
 

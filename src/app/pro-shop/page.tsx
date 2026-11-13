@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ButtonLink, CtaBand, PageHero, SectionHeading, TodoNote } from "@/components/ui";
+import { ButtonLink, CtaBand, Media, PageHero, SectionHeading, TodoNote } from "@/components/ui";
 
 export const metadata: Metadata = {
   title: "Pro shop",
@@ -21,6 +21,7 @@ export default function ProShopPage() {
         eyebrow="Pro shop"
         title="Gear up"
         intro="Racquets, strings, shuttles and accessories, available at the front desk. Ask our team for advice on the right gear for your game."
+        image="/images/gallery/pro-shop2.jpg"
       >
         <ButtonLink href="/contact">Ask about stock</ButtonLink>
       </PageHero>
@@ -28,6 +29,7 @@ export default function ProShopPage() {
       <section className="section">
         <div className="container-x">
           <SectionHeading eyebrow="In store" title="What we stock" />
+          <Media image="/images/gallery/pro-shop2.jpg" alt="Pro shop wall with racquets, shoes and apparel" className="mb-8 aspect-[21/9] rounded-3xl" />
           <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {categories.map((c) => (
               <li key={c.name} className="card p-6">

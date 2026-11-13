@@ -14,13 +14,14 @@ export default function ServicesPage() {
         eyebrow="Services"
         title="Restringing & more"
         intro="Best-value racquet restringing in Queensland, with same-day and express options. Plus events, school programs and parties."
+        image="/images/home/home3.jpg"
       >
         <ButtonLink href="/contact">Book a restring</ButtonLink>
       </PageHero>
 
       <section className="section">
         <div className="container-x grid gap-12 lg:grid-cols-2 lg:items-center">
-          <Media alt="Racquet restringing" label="Strings" className="aspect-[4/3] rounded-3xl" />
+          <Media image="/images/home/restringing.jpg" alt="Freshly strung racquets ready for collection" label="Strings" className="aspect-[4/3] rounded-3xl" />
           <div>
             <SectionHeading
               eyebrow="Restringing"

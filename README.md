@@ -26,7 +26,9 @@ In development (`npm run dev`), pages show amber **TODO** notes where details ar
 
 ## Photos
 
-Until photos are added, image areas show a branded court-line graphic. To use a real photo:
+Photos live in `public/images/` (academy, club, coaches, events, gallery, home, socials). They were taken from the current site's image bucket, with duplicates removed, resized to at most 2400px and compressed. Next.js serves smaller versions automatically.
+
+Any image area without a photo shows a branded court-line graphic. To add or swap a photo:
 
 1. Put it in `public/images/` (e.g. `public/images/little-smashers.jpg`).
 2. Set `image: "/images/little-smashers.jpg"` on the matching program in `src/content/site.ts`, or pass `image` to `<Media>` / `<FeatureSplit>` on a page.

@@ -1,6 +1,7 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Award, BadgeDollarSign, GraduationCap, LayoutGrid, Ticket, Users, type LucideIcon } from "lucide-react";
-import { ButtonLink, CourtLines, CtaBand, FeatureSplit, SectionHeading } from "@/components/ui";
+import { ButtonLink, CtaBand, FeatureSplit, SectionHeading } from "@/components/ui";
 import { site } from "@/content/site";
 
 const icons: Record<string, LucideIcon> = {
@@ -17,8 +18,10 @@ export default function HomePage() {
     <>
       {/* Hero */}
       <section className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(214,40,40,0.35),transparent_60%)]" />
-        <CourtLines className="absolute -right-24 top-0 h-[130%] w-[60%] -rotate-12 opacity-[0.08] max-md:hidden" />
+        <Image src="/images/gallery/main-page.jpg" alt="" fill priority sizes="100vw" className="object-cover" />
+        <div className="absolute inset-0 bg-gradient-to-r from-ink via-ink/80 to-ink/30" />
+        <div className="absolute inset-0 bg-gradient-to-t from-ink via-transparent to-ink/40" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(214,40,40,0.25),transparent_60%)]" />
         <div className="container-x relative grid gap-12 py-20 sm:py-28 lg:grid-cols-[1.3fr_1fr] lg:items-end">
           <div>
             <p className="eyebrow mb-5">{site.strapline}</p>
@@ -41,7 +44,7 @@ export default function HomePage() {
 
           <dl className="grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-line bg-line">
             {site.stats.map((s) => (
-              <div key={s.label} className="bg-ink-2/90 p-5 sm:p-6">
+              <div key={s.label} className="bg-ink-2/85 p-5 backdrop-blur-sm sm:p-6">
                 <dt className="sr-only">{s.label}</dt>
                 <dd>
                   <span className="block font-display text-4xl font-bold text-white sm:text-5xl">{s.value}</span>
@@ -84,6 +87,7 @@ export default function HomePage() {
               points={site.courtHire.points}
               cta={{ href: "/court-hire", label: "Court hire & rates" }}
               label="Courts"
+              image="/images/home/court-hire.jpg"
             />
             <FeatureSplit
               eyebrow="Academy"
@@ -92,6 +96,7 @@ export default function HomePage() {
               points={site.academy.points}
               cta={{ href: "/academy", label: "View programs" }}
               label="Academy"
+              image="/images/academy/academyhome.jpg"
               tone="court"
               reverse
             />
@@ -102,6 +107,7 @@ export default function HomePage() {
               points={site.socials.points}
               cta={{ href: "/socials", label: "Get involved" }}
               label="Social"
+              image="/images/socials/socials-2.jpg"
             />
           </div>
         </div>

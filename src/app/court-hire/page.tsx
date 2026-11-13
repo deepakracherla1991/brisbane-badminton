@@ -21,6 +21,7 @@ export default function CourtHirePage() {
         eyebrow="Court hire"
         title="Play more, pay less"
         intro="Nine BWF-standard courts, Queensland's highest ceilings, open seven days a week. Off-peak court hire starts from $15 an hour."
+        image="/images/gallery/courts1.jpg"
       >
         <ButtonLink href={site.links.bookCourt}>Book now</ButtonLink>
       </PageHero>

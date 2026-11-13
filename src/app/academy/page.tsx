@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { ButtonLink, CheckList, CtaBand, Media, PageHero, SectionHeading, TodoNote } from "@/components/ui";
-import { site } from "@/content/site";
+import { coaches, site } from "@/content/site";
 
 export const metadata: Metadata = {
   title: "Academy",
@@ -15,6 +16,7 @@ export default function AcademyPage() {
         eyebrow="Academy"
         title="Train with purpose"
         intro="Structured coaching for every age and stage, with 100+ active academy members on a clear development pathway."
+        image="/images/academy/training2.jpg"
       >
         <ButtonLink href={site.links.academyEnrol}>Enrol now</ButtonLink>
         <ButtonLink href="#programs" variant="ghost">
@@ -24,7 +26,7 @@ export default function AcademyPage() {
 
       <section className="section">
         <div className="container-x grid gap-12 lg:grid-cols-2 lg:items-center">
-          <Media alt="Academy training session" label="Academy" tone="court" className="aspect-[4/3] rounded-3xl" />
+          <Media image="/images/academy/academy27jan.jpg" alt="Academy players and coaches" label="Academy" tone="court" className="aspect-[4/3] rounded-3xl" />
           <div>
             <SectionHeading
               eyebrow="Why our academy"
@@ -59,6 +61,23 @@ export default function AcademyPage() {
             ))}
           </ul>
           <TodoNote>Add term dates, session times, ages and prices for each program.</TodoNote>
+        </div>
+      </section>
+
+      <section id="coaches" className="section">
+        <div className="container-x">
+          <SectionHeading eyebrow="Coaching team" title="Meet the coaches" />
+          <ul className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+            {coaches.map((c) => (
+              <li key={c.name} className="card overflow-hidden">
+                <div className="relative aspect-[4/5]">
+                  <Image src={c.image} alt={`Coach ${c.name}`} fill sizes="(min-width: 1024px) 25vw, 50vw" className="object-cover object-top" />
+                </div>
+                <p className="px-4 py-3 font-display text-lg uppercase tracking-wide text-white">{c.name}</p>
+              </li>
+            ))}
+          </ul>
+          <TodoNote>Confirm coach names and add roles or qualifications.</TodoNote>
         </div>
       </section>
 
