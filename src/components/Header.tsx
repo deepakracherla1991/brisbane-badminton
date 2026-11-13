@@ -49,6 +49,12 @@ export function Header() {
 
         <div className="flex items-center gap-2">
           <Link
+            href={site.links.portal}
+            className="hidden rounded-full border border-white/20 px-4 py-2 font-display text-sm uppercase tracking-wider text-zinc-200 transition-colors hover:border-white hover:text-white xl:inline-block"
+          >
+            Member portal
+          </Link>
+          <Link
             href={site.links.bookCourt}
             className="hidden rounded-full bg-brand px-4 py-2 font-display text-sm font-semibold uppercase tracking-wider text-white transition-colors hover:bg-brand-600 sm:inline-block"
           >
@@ -90,8 +96,14 @@ export function Header() {
             ))}
           </ul>
           <Link
+            href={site.links.portal}
+            className="mt-8 block rounded-full border border-white/25 py-3 text-center font-display text-lg uppercase tracking-wider text-white"
+          >
+            Member portal
+          </Link>
+          <Link
             href={site.links.bookCourt}
-            className="mt-8 block rounded-full bg-brand py-3 text-center font-display text-lg font-semibold uppercase tracking-wider text-white"
+            className="mt-3 block rounded-full bg-brand py-3 text-center font-display text-lg font-semibold uppercase tracking-wider text-white"
           >
             Book a court
           </Link>

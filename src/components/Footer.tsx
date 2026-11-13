@@ -46,6 +46,11 @@ export function Footer() {
               </li>
             ))}
             <li>
+              <Link href="/portal" className="text-zinc-300 hover:text-white">
+                Academy portal
+              </Link>
+            </li>
+            <li>
               <Link href="/contact#faq" className="text-zinc-300 hover:text-white">
                 FAQ
               </Link>

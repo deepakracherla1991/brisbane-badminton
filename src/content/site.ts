@@ -49,8 +49,8 @@ export const site = {
   links: {
     // TODO: replace with the real online court-booking URL.
     bookCourt: "/court-hire#book",
-    // TODO: replace with the academy enrolment form URL (e.g. a Fillout form).
-    academyEnrol: "/academy#enrol",
+    academyEnrol: "/portal/classes",
+    portal: "/portal",
     // TODO: replace with the club registration form URL.
     clubJoin: "/club#join",
   },
@@ -124,6 +124,9 @@ export const site = {
   },
 
   academy: {
+    // TODO: add bank transfer details (account name, BSB, account number) if you accept transfers.
+    paymentInstructions:
+      "Pay at the front desk before your first class. Once paid, our team will mark it as paid in your portal.",
     points: [
       "Structured training programs",
       "Junior development pathway",

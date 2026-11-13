@@ -57,6 +57,41 @@ Brand logos live in `public/logos/`:
 
 Use `<Logo variant="dark" | "light" | "mono" />` from `src/components/Logo.tsx`. The browser-tab icon (`src/app/icon.png`), Apple touch icon and social share image (`src/app/opengraph-image.png`) are generated from these.
 
+## Academy portal (`/portal`)
+
+Customers create an account, add students (a parent can add several children), browse the open term's classes and enrol, or join the waitlist when a class is full. They can see their enrolments and payment status, and withdraw. Staff with the **admin** role manage terms and classes, see each class roster with parent contact details, mark payments, and withdraw students. When a place frees up (someone withdraws, or capacity is raised), the first person on the waitlist is enrolled automatically and emailed.
+
+There's no online payment: enrolments start as **Awaiting payment** and staff mark them **Paid** (or **No charge**) in the admin roster. Payment wording is `academy.paymentInstructions` in `src/content/site.ts`.
+
+### One-time setup
+
+1. **Create a Supabase project** at https://supabase.com (free tier is fine).
+2. **Create the database tables.** In the Supabase dashboard open **SQL Editor**, paste in the contents of `supabase/migrations/0001_academy_portal.sql` and run it. Optionally run `supabase/seed.sql` too, for a sample term with six sample classes (edit or delete them afterwards in the admin page).
+3. **Add the keys.** Copy `.env.example` to `.env.local` and fill in `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` (Supabase: **Connect** button, or **Project Settings → API Keys**). Restart `npm run dev`.
+4. **Set the login links.** In Supabase **Authentication → URL Configuration**, set **Site URL** to your site (e.g. `http://localhost:3000` while testing) and add `http://localhost:3000/portal/auth/confirm` (plus your live domain's `/portal/auth/confirm`) under **Redirect URLs**.
+5. **Recommended: make email links work in any browser.** In **Authentication → Emails**, edit the templates so the links point at the portal:
+   - *Confirm signup*: `{{ .SiteURL }}/portal/auth/confirm?token_hash={{ .TokenHash }}&type=email&next=/portal`
+   - *Reset password*: `{{ .SiteURL }}/portal/auth/confirm?token_hash={{ .TokenHash }}&type=recovery&next=/portal/reset-password`
+
+   With the default templates, links only work when opened in the same browser the person signed up in.
+6. **Make yourself an admin.** Register through `/portal/register`, then in the Supabase SQL editor run:
+   ```sql
+   update public.profiles set role = 'admin' where email = 'you@example.com';
+   ```
+   The **Admin** tab then appears in the portal.
+
+### Emails
+
+- **Sign-up confirmation and password reset** emails are sent by Supabase. Its built-in sender is limited to a few emails per hour, so before going live set up custom SMTP under **Authentication → Emails → SMTP Settings** (Resend provides SMTP).
+- **Enrolment, waitlist and "a place opened up"** emails are sent by the site through [Resend](https://resend.com). Set `RESEND_API_KEY` and `EMAIL_FROM` (an address on a domain verified in Resend). Without a key, these emails are printed in the server log instead.
+
+### How it's built
+
+- `supabase/migrations/0001_academy_portal.sql`: tables, row level security (customers only ever see their own students and enrolments) and the `enrol_student` / `withdraw_enrolment` / `promote_waitlist` functions, which lock the class so two people can't take the last place at once.
+- `src/app/portal/`: pages; `actions.ts`, `auth-actions.ts` and `admin/actions.ts` are the server actions.
+- `src/proxy.ts`: keeps the login session fresh on portal pages.
+- `src/lib/email.ts`: email templates.
+
 ## Chat assistant ("Birdie")
 
 A chat button in the bottom-right corner of every page opens **Birdie**, an AI assistant that answers visitor questions about the venue.

@@ -63,6 +63,7 @@ ${rates}
 
 # Academy (${page("/academy")})
 ${list(site.academy.points)}
+Enrol online in the academy portal (${page("/portal/classes")}): create an account, add students (parents can add their children), then enrol or join the waitlist if a class is full. The portal shows current class times, coaches, fees and spots left. Payment: ${site.academy.paymentInstructions}
 Over 100 active academy members. Individual player assessments help place new players in the right group. PlayOn vouchers are accepted.
 Programs:
 ${programs}
