@@ -48,7 +48,8 @@ export const site = {
 
   links: {
     // TODO: replace with the real online court-booking URL.
-    bookCourt: "/court-hire#book",
+    /** Online court booking (YepBooking). */
+    bookCourt: "https://badmintonbrisbane.yepbooking.com.au/",
     academyEnrol: "/portal/classes",
     portal: "/portal",
     // TODO: replace with the club registration form URL.
@@ -110,16 +111,17 @@ export const site = {
   courtHire: {
     points: [
       "Open 7 days a week, year-round",
+      "Air-conditioned facility",
       "Queensland's highest-ceiling badminton courts",
       "Instant online booking",
       "From $15/hr off-peak",
       "Great for events, corporate badminton and school programs",
     ],
-    // TODO: confirm rates and peak/off-peak times.
+    // Weekday rates as shown on the booking system. TODO: confirm weekend and public holiday rates.
     rates: [
-      { label: "Off-peak", price: "from $15", unit: "per court / hour", note: "Weekday daytime" },
-      { label: "Peak", price: "TBC", unit: "per court / hour", note: "Evenings & weekends" },
-      { label: "Groups & events", price: "Quote", unit: "multi-court bookings", note: "Schools, corporate, tournaments" },
+      { label: "Off-peak", price: "$15", unit: "per court / hour", note: "Weekdays, before 2pm" },
+      { label: "Afternoon", price: "$20", unit: "per court / hour", note: "Weekdays, 2pm – 5pm" },
+      { label: "Peak", price: "$25", unit: "per court / hour", note: "Weekdays, from 5pm" },
     ],
   },
 

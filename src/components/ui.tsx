@@ -241,6 +241,7 @@ export function CtaBand({
             <div className="mt-8 flex flex-wrap justify-center gap-3">
               <Link
                 href={primary.href}
+                {...(/^https?:\/\//.test(primary.href) ? { target: "_blank", rel: "noopener noreferrer" } : {})}
                 className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 font-display text-sm font-semibold uppercase tracking-wider text-ink transition-colors hover:bg-shuttle"
               >
                 {primary.label}
