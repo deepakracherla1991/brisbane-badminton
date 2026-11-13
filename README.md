@@ -6,6 +6,8 @@ Built with **Next.js 16 (App Router)**, **React 19**, **Tailwind CSS 4** and **l
 
 ## Getting started
 
+Requires **Node.js 20.9 or newer** (`node -v` to check). With nvm, run `nvm use` to pick up `.nvmrc`.
+
 ```bash
 npm install
 npm run dev        # http://localhost:3000
