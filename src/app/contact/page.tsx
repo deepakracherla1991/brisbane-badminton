@@ -25,10 +25,10 @@ export default function ContactPage() {
       />
 
       {/* Location: venue details + map */}
-      <section className="section">
-        <div className="container-x grid gap-6 lg:grid-cols-2">
+      <section className="py-12 sm:py-16">
+        <div className="container-x grid max-w-5xl gap-5 lg:grid-cols-2">
           <article className="card overflow-hidden border-l-4 border-l-brand">
-            <div className="relative aspect-[3/2]">
+            <div className="relative aspect-[2/1]">
               <Image
                 src="/images/gallery/building.jpg"
                 alt="Brisbane Badminton entrance at 39 Quilton Place, Crestmead"
@@ -37,15 +37,15 @@ export default function ContactPage() {
                 className="object-cover"
               />
             </div>
-            <div className="space-y-6 p-6 sm:p-8">
-              <h2 className="flex gap-3 text-2xl font-bold sm:text-3xl">
-                <MapPin className="mt-1 h-6 w-6 shrink-0 text-brand-300" aria-hidden="true" />
+            <div className="space-y-4 p-5 sm:p-6">
+              <h2 className="flex gap-2 text-lg font-bold sm:text-xl">
+                <MapPin className="mt-0.5 h-5 w-5 shrink-0 text-brand-300" aria-hidden="true" />
                 {contact.addressFull}
               </h2>
 
               <div>
-                <h3 className="mb-3 text-sm tracking-widest text-zinc-400">Phone</h3>
-                <ul className="space-y-2">
+                <h3 className="mb-2 text-xs tracking-widest text-zinc-400">Phone</h3>
+                <ul className="space-y-1.5 text-sm">
                   {contact.phones.map((p) => (
                     <li key={p.label} className="flex flex-wrap items-center gap-x-2 text-zinc-300">
                       <Phone className="h-4 w-4 text-brand-300" aria-hidden="true" />
@@ -59,25 +59,25 @@ export default function ContactPage() {
               </div>
 
               <div>
-                <h3 className="mb-3 text-sm tracking-widest text-zinc-400">Email</h3>
-                <a href={`mailto:${contact.email}`} className="flex items-center gap-2 break-all font-medium text-white underline-offset-4 hover:underline">
+                <h3 className="mb-2 text-xs tracking-widest text-zinc-400">Email</h3>
+                <a href={`mailto:${contact.email}`} className="flex items-center gap-2 break-all text-sm font-medium text-white underline-offset-4 hover:underline">
                   <Mail className="h-4 w-4 shrink-0 text-brand-300" aria-hidden="true" />
                   {contact.email}
                 </a>
               </div>
 
-              <div className="flex flex-wrap gap-3 pt-2">
+              <div className="flex flex-wrap gap-2 pt-1">
                 <a
                   href={whatsappUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-full bg-[#25D366] px-5 py-2.5 font-display text-sm font-semibold uppercase tracking-wider text-ink transition-opacity hover:opacity-90"
+                  className="inline-flex items-center gap-2 rounded-full bg-[#25D366] px-4 py-2 font-display text-xs font-semibold uppercase tracking-wider text-ink transition-opacity hover:opacity-90"
                 >
                   <WhatsAppIcon className="h-4 w-4" /> WhatsApp us
                 </a>
                 <a
                   href={`tel:${contact.phones[0].number}`}
-                  className="inline-flex items-center gap-2 rounded-full border border-white/25 px-5 py-2.5 font-display text-sm font-semibold uppercase tracking-wider text-white transition-colors hover:border-white hover:bg-white/5"
+                  className="inline-flex items-center gap-2 rounded-full border border-white/25 px-4 py-2 font-display text-xs font-semibold uppercase tracking-wider text-white transition-colors hover:border-white hover:bg-white/5"
                 >
                   <Phone className="h-4 w-4" aria-hidden="true" /> Call us
                 </a>
@@ -85,19 +85,19 @@ export default function ContactPage() {
             </div>
           </article>
 
-          <article className="card flex flex-col border-l-4 border-l-brand p-6 sm:p-8">
-            <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
-              <h2 className="text-xl font-bold text-brand-300 sm:text-2xl">Find us on Google Maps</h2>
+          <article className="card flex flex-col border-l-4 border-l-brand p-5 sm:p-6">
+            <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+              <h2 className="text-lg font-bold text-brand-300 sm:text-xl">Find us on Google Maps</h2>
               <a
                 href={contact.mapsUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 font-display text-sm uppercase tracking-wider text-zinc-300 hover:text-white"
+                className="inline-flex items-center gap-1.5 font-display text-xs uppercase tracking-wider text-zinc-300 hover:text-white"
               >
                 Get directions <ExternalLink className="h-4 w-4" aria-hidden="true" />
               </a>
             </div>
-            <div className="relative min-h-80 flex-1 overflow-hidden rounded-xl bg-white">
+            <div className="relative min-h-72 flex-1 overflow-hidden rounded-xl bg-white">
               <iframe
                 title="Google Map showing Brisbane Badminton, 39 Quilton Pl, Crestmead"
                 src={`https://maps.google.com/maps?q=${encodeURIComponent(contact.mapsQuery)}&z=16&output=embed`}
