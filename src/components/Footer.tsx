@@ -50,6 +50,11 @@ export function Footer() {
                 Academy portal
               </Link>
             </li>
+            <li className="hide-in-app">
+              <Link href="/app" className="text-zinc-300 hover:text-white">
+                Get the app
+              </Link>
+            </li>
             <li>
               <Link href="/contact#faq" className="text-zinc-300 hover:text-white">
                 FAQ

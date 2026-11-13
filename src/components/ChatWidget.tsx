@@ -184,7 +184,7 @@ export function ChatWidget() {
         role="dialog"
         aria-label={`Chat with ${ASSISTANT_NAME}`}
         hidden={!open}
-        className="fixed top-20 right-3 bottom-24 left-3 z-[60] flex flex-col sm:top-auto sm:left-auto sm:h-[min(600px,calc(100dvh-8rem))] sm:w-[400px] overflow-hidden rounded-3xl border border-line bg-ink shadow-2xl shadow-black/60"
+        className="fixed top-20 right-3 bottom-[calc(6rem+env(safe-area-inset-bottom))] left-3 z-[60] flex flex-col sm:top-auto sm:left-auto sm:h-[min(600px,calc(100dvh-8rem))] sm:w-[400px] overflow-hidden rounded-3xl border border-line bg-ink shadow-2xl shadow-black/60"
       >
         {/* Header */}
         <div className="flex items-center gap-3 border-b border-line bg-gradient-to-r from-[#2a0709] to-ink-2 px-4 py-3.5">
@@ -339,7 +339,7 @@ export function ChatWidget() {
         <button
           type="button"
           onClick={() => setOpen(true)}
-          className="fixed right-5 bottom-24 z-[60] max-w-60 rounded-2xl rounded-br-md bg-white px-4 py-3 text-left text-sm text-ink shadow-xl"
+          className="fixed right-5 bottom-[calc(6rem+env(safe-area-inset-bottom))] z-[60] max-w-60 rounded-2xl rounded-br-md bg-white px-4 py-3 text-left text-sm text-ink shadow-xl"
         >
           <span className="font-semibold">Questions?</span> Ask {ASSISTANT_NAME}, I reply instantly 🏸
         </button>
@@ -352,7 +352,7 @@ export function ChatWidget() {
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
         aria-label={open ? "Close chat" : `Chat with ${ASSISTANT_NAME}`}
-        className="fixed right-5 bottom-5 z-[60] grid h-16 w-16 place-items-center rounded-full bg-brand text-white shadow-xl shadow-brand/30 transition-transform hover:scale-105 hover:bg-brand-600"
+        className="fixed right-5 bottom-[calc(1.25rem+env(safe-area-inset-bottom))] z-[60] grid h-16 w-16 place-items-center rounded-full bg-brand text-white shadow-xl shadow-brand/30 transition-transform hover:scale-105 hover:bg-brand-600"
       >
         {open ? <X className="h-7 w-7" /> : <MessageCircle className="h-7 w-7" />}
         {!open && <span className="absolute top-1 right-1 h-3.5 w-3.5 rounded-full border-2 border-brand bg-emerald-400" aria-hidden="true" />}

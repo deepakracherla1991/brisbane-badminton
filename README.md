@@ -57,6 +57,17 @@ Brand logos live in `public/logos/`:
 
 Use `<Logo variant="dark" | "light" | "mono" />` from `src/components/Logo.tsx`. The browser-tab icon (`src/app/icon.png`), Apple touch icon and social share image (`src/app/opengraph-image.png`) are generated from these.
 
+## Mobile app (installable web app)
+
+The site can be installed on phones as an app (a Progressive Web App), with no app store needed. Visitors open **/app** ("Get the app" in the footer, the mobile menu and the portal) for an **Install** button on Android and desktop Chrome, or step-by-step instructions on iPhone (Safari → Share → Add to Home Screen).
+
+- `src/app/manifest.ts`: app name, colours, icons and home-screen shortcuts (My classes, Enrol, Court hire).
+- `public/icons/`: app icons generated from the logo emblem. `src/app/apple-icon.png` is the iPhone home-screen icon.
+- `public/sw.js`: service worker. Pages always load from the network, so portal data is never stale; `public/offline.html` is shown when there's no connection. It only runs in production builds.
+- "Get the app" links are hidden when the site is already running as the installed app.
+
+Every website update is in the app straight away.
+
 ## Academy portal (`/portal`)
 
 Customers create an account, add students (a parent can add several children), browse the open term's classes and enrol, or join the waitlist when a class is full. They can see their enrolments and payment status, and withdraw. Staff with the **admin** role manage terms and classes, see each class roster with parent contact details, mark payments, and withdraw students. When a place frees up (someone withdraws, or capacity is raised), the first person on the waitlist is enrolled automatically and emailed.

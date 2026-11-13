@@ -36,6 +36,11 @@
   .card { @apply rounded-2xl border border-line bg-ink-2; }
 }
 
+/* Hide "get the app" prompts when already running as the installed app. */
+@media (display-mode: standalone) {
+  .hide-in-app { display: none !important; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }

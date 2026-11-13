@@ -150,6 +150,14 @@ export default async function PortalHome() {
         )}
       </section>
 
+      <Link href="/app" className="hide-in-app card flex items-center justify-between gap-4 p-5 hover:border-brand/60">
+        <span>
+          <span className="block font-bold text-white">Get the Brisbane Badminton app</span>
+          <span className="text-sm text-zinc-400">Add the portal to your phone&apos;s home screen for one-tap access.</span>
+        </span>
+        <span aria-hidden="true" className="text-brand-300">→</span>
+      </Link>
+
       <p className="text-sm text-zinc-500">
         Questions about classes or payments? Call {site.contact.phones[0].display} or email{" "}
         <a href={`mailto:${site.contact.email}`} className="text-zinc-300 hover:text-white">

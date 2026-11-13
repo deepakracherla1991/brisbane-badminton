@@ -96,6 +96,16 @@ export function Header() {
             ))}
           </ul>
           <Link
+            href="/app"
+            className="hide-in-app mt-6 flex items-center justify-between rounded-2xl border border-line bg-ink-2 px-5 py-4 text-zinc-200"
+          >
+            <span>
+              <span className="block font-display text-lg uppercase tracking-wide text-white">Get the app</span>
+              <span className="text-sm text-zinc-400">Add Brisbane Badminton to your home screen</span>
+            </span>
+            <span aria-hidden="true" className="text-brand-300">→</span>
+          </Link>
+          <Link
             href={site.links.portal}
             className="mt-8 block rounded-full border border-white/25 py-3 text-center font-display text-lg uppercase tracking-wider text-white"
           >
