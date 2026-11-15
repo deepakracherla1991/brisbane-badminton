@@ -24,15 +24,15 @@ export default function HomePage() {
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(217,32,39,0.25),transparent_60%)]" />
         <div className="container-x relative grid gap-12 py-20 sm:py-28 lg:grid-cols-[1.3fr_1fr] lg:items-end">
           <div>
-            <p className="eyebrow mb-5">{site.strapline}</p>
+            <p className="eyebrow mb-5">Queensland&apos;s first dedicated badminton venue</p>
             <h1 className="text-5xl font-bold leading-[0.95] sm:text-7xl lg:text-8xl">
-              Built for
+              Badminton&apos;s
               <br />
-              <span className="text-brand">badminton.</span>
+              <span className="text-brand">home in Brisbane.</span>
             </h1>
             <p className="mt-6 max-w-xl text-lg text-zinc-300 sm:text-xl">
-              Queensland&apos;s first dedicated badminton venue. Nine BWF-standard courts under the state&apos;s
-              highest ceilings, open seven days in Crestmead.
+              Nine BWF-standard courts, the state&apos;s highest ceilings and a community of players at every
+              level. Open seven days in Crestmead.
             </p>
             <div className="mt-9 flex flex-wrap gap-3">
               <ButtonLink href={site.links.bookCourt}>Book a court</ButtonLink>
