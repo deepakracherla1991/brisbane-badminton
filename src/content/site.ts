@@ -44,7 +44,6 @@ export const site = {
   url: "https://www.badmintonbrisbane.com.au",
 
   links: {
-    // TODO: replace with the real online court-booking URL.
     /** Online court booking (YepBooking). */
     bookCourt: "https://badmintonbrisbane.yepbooking.com.au/",
     academyEnrol: "/portal/classes",
