@@ -18,7 +18,7 @@ export default function HomePage() {
     <>
       {/* Hero */}
       <section className="relative overflow-hidden">
-        <Image src="/images/home/hero.webp" alt="" fill priority sizes="100vw" className="object-cover" />
+        <Image src="/images/home/hero.jpg" alt="" fill priority sizes="100vw" className="object-cover" />
         <div className="absolute inset-0 bg-gradient-to-r from-ink via-ink/80 to-ink/30" />
         <div className="absolute inset-0 bg-gradient-to-t from-ink via-transparent to-ink/40" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(217,32,39,0.25),transparent_60%)]" />
