@@ -5,7 +5,7 @@
 
 export type ProgramId = "kids" | "advanced" | "trial";
 export type SessionStatus = "open" | "limited" | "full";
-export type PaymentMethodId = "bank" | "playon" | "playon-bank";
+export type PaymentMethodId = "card" | "bank" | "playon" | "playon-bank";
 
 export const enrolmentTerm = {
   id: "2026-t4",
@@ -86,10 +86,12 @@ export const playerOptions = {
   heardFrom: ["Existing Academy Student", "Friend / Family", "PlayOn Voucher", "Google Search", "Facebook", "Instagram", "School", "Website", "Other"],
 };
 
-export const paymentMethods: { id: PaymentMethodId; label: string; needsVoucher: boolean }[] = [
-  { id: "bank", label: "Bank Transfer", needsVoucher: false },
-  { id: "playon", label: "PlayOn Voucher", needsVoucher: true },
-  { id: "playon-bank", label: "PlayOn Voucher + Balance by Bank Transfer", needsVoucher: true },
+/** `card` is only offered when Square is set up (see README). */
+export const paymentMethods: { id: PaymentMethodId; label: string; needsVoucher: boolean; needsReceipt: boolean }[] = [
+  { id: "card", label: "Pay by card now (Visa, Mastercard, Apple Pay, Google Pay)", needsVoucher: false, needsReceipt: false },
+  { id: "bank", label: "Bank Transfer", needsVoucher: false, needsReceipt: true },
+  { id: "playon", label: "PlayOn Voucher", needsVoucher: true, needsReceipt: true },
+  { id: "playon-bank", label: "PlayOn Voucher + Balance by Bank Transfer", needsVoucher: true, needsReceipt: true },
 ];
 
 export const bankDetails = {
@@ -106,7 +108,7 @@ export const importantNotes = [
   "New students may be assessed and placed into the most suitable group.",
   "Places are limited and subject to availability. Preferred sessions are subject to final confirmation by Brisbane Badminton Academy.",
   "Makeup lessons need at least 24 hours' notice by email to admin@badmintonbrisbane.com.au, must be used within the same term, and are limited to 2 per term.",
-  "Payment receipt and/or PlayOn voucher details must be submitted with this form.",
+  "If paying by bank transfer or PlayOn, your payment receipt and/or PlayOn voucher details must be submitted with this form.",
   "Non-marking shoes are required for all players.",
 ];
 

@@ -33,6 +33,9 @@ export type Application = {
   status: ApplicationStatus;
   payment_status: ApplicationPayment;
   admin_notes: string | null;
+  square_order_id?: string | null;
+  square_payment_id?: string | null;
+  paid_at?: string | null;
 };
 
 export const STATUS_LABELS: Record<ApplicationStatus, string> = {

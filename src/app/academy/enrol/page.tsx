@@ -4,6 +4,8 @@ import { EnrolmentForm } from "@/components/enrol/EnrolmentForm";
 import { PageHero } from "@/components/ui";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
 import { getCurrentProfile } from "@/lib/portal/auth";
+import { isSquareConfigured } from "@/lib/square";
+import { isAdminClientConfigured } from "@/lib/supabase/admin";
 import { advancedSession, enrolmentTerm, familyDiscountNote, kidsSessions, plans, programStructure } from "@/content/enrolment";
 import { site } from "@/content/site";
 
@@ -82,7 +84,7 @@ export default async function EnrolPage() {
           {/* Form */}
           <div id="form" className="scroll-mt-24">
             {isSupabaseConfigured ? (
-              <EnrolmentForm prefill={prefill} />
+              <EnrolmentForm prefill={prefill} cardEnabled={isSquareConfigured && isAdminClientConfigured} />
             ) : (
               <div className="card p-8 text-center">
                 <h2 className="text-2xl font-bold">Online enrolment is being set up</h2>

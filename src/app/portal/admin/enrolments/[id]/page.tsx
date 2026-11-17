@@ -124,7 +124,22 @@ export default async function EnrolmentDetailPage({ params }: { params: Promise<
               </Row>
               <Row label="Method">{paymentMethods.find((m) => m.id === a.payment_method)?.label ?? a.payment_method}</Row>
               {a.playon_voucher && <Row label="PlayOn voucher">{a.playon_voucher}</Row>}
-              <Row label="Receipts">
+              {a.payment_method === "card" && (
+                <Row label="Card payment">
+                  {a.paid_at ? (
+                    <span className="text-emerald-300">
+                      Paid via Square on {new Date(a.paid_at).toLocaleString("en-AU", { dateStyle: "medium", timeStyle: "short", timeZone: "Australia/Brisbane" })}
+                      {a.square_payment_id && <span className="block font-mono text-xs text-zinc-500">Payment {a.square_payment_id}</span>}
+                    </span>
+                  ) : (
+                    <span className="text-brand-300">
+                      Not completed. The parent may have left the checkout page.
+                      {a.square_order_id && <span className="block font-mono text-xs text-zinc-500">Square order {a.square_order_id}</span>}
+                    </span>
+                  )}
+                </Row>
+              )}
+              {a.payment_method !== "card" && <Row label="Receipts">
                 {files.length ? (
                   <ul className="space-y-1.5">
                     {files.map((f) => (
@@ -142,7 +157,7 @@ export default async function EnrolmentDetailPage({ params }: { params: Promise<
                 ) : (
                   "None uploaded"
                 )}
-              </Row>
+              </Row>}
             </dl>
           </section>
 

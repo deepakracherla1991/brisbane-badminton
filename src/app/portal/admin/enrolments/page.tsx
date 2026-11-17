@@ -135,7 +135,13 @@ export default async function EnrolmentsAdminPage({ searchParams }: { searchPara
                   </td>
                   <td className="px-4 py-3">
                     <span className={`text-xs ${r.payment_status === "verified" ? "text-emerald-300" : r.payment_status === "pending" ? "text-brand-300" : "text-zinc-400"}`}>
-                      {PAYMENT_LABELS[r.payment_status]}
+                      {r.payment_method === "card"
+                        ? r.payment_status === "verified"
+                          ? "Paid by card"
+                          : r.payment_status === "refunded"
+                            ? "Refunded"
+                            : "Card payment not completed"
+                        : PAYMENT_LABELS[r.payment_status]}
                     </span>
                     <span className="block text-xs text-zinc-500">{paymentMethods.find((m) => m.id === r.payment_method)?.label ?? r.payment_method}</span>
                   </td>

@@ -40,7 +40,7 @@ export async function GET(request: NextRequest) {
     "Reference", "Received", "Term", "Status", "Payment status", "Program", "Plan", "Sessions", "Invited by coach",
     "Player", "Date of birth", "Age", "Gender", "Level", "Experience", "Medical", "Heard from",
     "Parent / guardian", "Mobile", "Email", "Emergency contact", "Suburb", "Sibling",
-    "Price", "Discount", "Total", "Payment method", "PlayOn voucher", "Receipt files", "Staff notes",
+    "Price", "Discount", "Total", "Payment method", "PlayOn voucher", "Receipt files", "Card paid at", "Square payment ID", "Staff notes",
   ];
   const rows = (data ?? []).map((a) => [
     a.reference,
@@ -72,6 +72,8 @@ export async function GET(request: NextRequest) {
     paymentMethods.find((m) => m.id === a.payment_method)?.label ?? a.payment_method,
     a.playon_voucher,
     a.files.length,
+    a.paid_at ? new Date(a.paid_at).toLocaleString("en-AU", { timeZone: "Australia/Brisbane" }) : "",
+    a.square_payment_id,
     a.admin_notes,
   ]);
   const csv = "﻿" + [header, ...rows].map((r) => r.map(cell).join(",")).join("\r\n");

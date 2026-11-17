@@ -102,7 +102,8 @@ export function validateStep(step: number, v: EnrolmentInput): Errors {
     const method = paymentMethods.find((m) => m.id === v.paymentMethod);
     if (!method) e.paymentMethod = "Choose a payment method.";
     if (method?.needsVoucher && !v.voucher.trim()) e.voucher = "Enter your PlayOn voucher number.";
-    if (!v.files.length) e.files = "Upload your payment receipt or PlayOn voucher.";
+    if (method?.needsReceipt !== false && !v.files.length) e.files = "Upload your payment receipt or PlayOn voucher.";
+    if (method?.id === "card" && v.program === "trial") e.paymentMethod = "Card payment isn't available for trial lessons yet. Choose another method.";
     if (v.files.length > uploadLimits.maxFiles) e.files = `Upload up to ${uploadLimits.maxFiles} files.`;
     if (!v.agree) e.agree = "Please read and accept the important notes.";
   }

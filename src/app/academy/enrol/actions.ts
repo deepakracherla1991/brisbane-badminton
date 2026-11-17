@@ -7,9 +7,10 @@ import { getOrigin } from "@/lib/portal/origin";
 import { enrolmentTerm, plans, programs } from "@/content/enrolment";
 import { normalise, sessionLabel, validateAll, type EnrolmentInput, type Errors } from "@/lib/enrolment/validate";
 import { sendEnrolmentReceived } from "@/lib/email";
+import { createCheckout, describeSquareError, isSquareConfigured } from "@/lib/square";
 
 export type SubmitResult =
-  | { ok: true; reference: string; totalCents: number | null }
+  | { ok: true; reference: string; totalCents: number | null; checkoutUrl?: string }
   | { ok: false; error: string; errors?: Errors };
 
 // Basic abuse protection: 8 submissions per IP per hour (per server instance).
@@ -81,7 +82,31 @@ export async function submitEnrolment(raw: EnrolmentInput & { website?: string }
   const profile = await getCurrentProfile().catch(() => null);
   const supabase = await createClient();
   const reference = makeReference();
+  const origin = await getOrigin();
+
+  // Card: create the Square checkout page first, so the enrolment is saved with its Square order.
+  let checkout: { url: string; orderId: string } | null = null;
+  if (v.paymentMethod === "card") {
+    if (!isSquareConfigured) return { ok: false, error: "Card payments aren't available right now. Please choose another payment method." };
+    if (!price?.total) return { ok: false, error: "Card payment isn't available for this option. Please choose another payment method." };
+    const planName = plans.find((p) => p.id === planId)?.name ?? "Group training";
+    try {
+      checkout = await createCheckout({
+        reference,
+        name: `${enrolmentTerm.name} – ${planName} – ${v.player.name}`,
+        amountCents: price.total,
+        buyerEmail: v.parent.email,
+        redirectUrl: `${origin}/academy/enrol/complete?ref=${reference}`,
+        note: `${reference} · ${v.player.name} · ${planName}`,
+      });
+    } catch (e) {
+      console.error("[enrol] Square checkout failed:", describeSquareError(e));
+      return { ok: false, error: "We couldn't start the card payment. Please try again, or choose bank transfer." };
+    }
+  }
+
   const { error } = await supabase.from("enrolment_applications").insert({
+    square_order_id: checkout?.orderId ?? null,
     reference,
     user_id: profile?.id ?? null,
     term: enrolmentTerm.name,
@@ -114,6 +139,9 @@ export async function submitEnrolment(raw: EnrolmentInput & { website?: string }
     return { ok: false, error: "We couldn't save your enrolment. Please try again, or email us." };
   }
 
+  // Card: emails are sent once Square confirms the payment (see lib/enrolment/payments.ts).
+  if (checkout) return { ok: true, reference, totalCents: price?.total ?? null, checkoutUrl: checkout.url };
+
   await sendEnrolmentReceived({
     reference,
     parentEmail: v.parent.email,
@@ -125,7 +153,7 @@ export async function submitEnrolment(raw: EnrolmentInput & { website?: string }
     totalCents: price?.total ?? null,
     discountCents: price?.discount ?? 0,
     paymentMethod: v.paymentMethod,
-    origin: await getOrigin(),
+    origin,
   });
 
   return { ok: true, reference, totalCents: price?.total ?? null };

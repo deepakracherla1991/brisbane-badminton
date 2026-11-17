@@ -85,7 +85,26 @@ After submitting, the parent gets a reference such as `BB-T4-K7Q2M` and an email
 
 **Setup:** run `supabase/migrations/0002_enrolment_form.sql` in the Supabase SQL editor (after `0001`). It creates the `enrolment_applications` table and the private `enrolment-uploads` storage bucket with their access rules.
 
-**Card payments (later):** the payment step is built so a card option (e.g. Stripe Checkout) can be added as another payment method. `card` is already an allowed `payment_method` in the database.
+### Card payments with Square
+
+When Square is set up, the payment step offers **Pay by card now** (Visa, Mastercard, Apple Pay, Google Pay):
+
+1. The parent submits the form. The site creates a Square-hosted checkout page for the exact total (calculated on the server) and saves the enrolment with its Square order ID.
+2. The parent pays on Square's secure page. Card details never touch this website.
+3. Square sends them back to `/academy/enrol/complete`. The server asks Square whether the order was actually paid, then marks the enrolment **Payment verified** and sends the confirmation emails (once).
+4. The webhook `/api/square/webhook` does the same check, so payments are recorded even if the parent closes the tab before returning.
+
+Bank transfer and PlayOn still work as before, with receipt upload. Trial lessons have no fixed price yet, so card payment isn't offered for them.
+
+**Setup**
+
+1. Run `supabase/migrations/0003_square_payments.sql` in the Supabase SQL editor.
+2. In the [Square Developer Console](https://developer.squareup.com/apps), create an application. From **Credentials**, copy the **Access token** into `SQUARE_ACCESS_TOKEN`. From **Locations**, copy your location ID into `SQUARE_LOCATION_ID`. Start with the **Sandbox** credentials and `SQUARE_ENVIRONMENT=sandbox`, and test with Square's sandbox test cards.
+3. Add your Supabase **secret key** (Project Settings → API Keys → Secret keys) as `SUPABASE_SECRET_KEY`. It's used only on the server, to record confirmed payments.
+4. Webhook (recommended): in the Square app, open **Webhooks → Subscriptions → Add**. Set the URL to `https://<your domain>/api/square/webhook` and choose the events `payment.created` and `payment.updated`. Put the same URL in `SQUARE_WEBHOOK_URL` and the subscription's **Signature key** in `SQUARE_WEBHOOK_SIGNATURE_KEY`.
+5. Add the same variables in Vercel (Settings → Environment Variables) and redeploy. To go live, switch to the **Production** access token and location, and set `SQUARE_ENVIRONMENT=production`.
+
+Staff see "Paid by card" (with the Square payment ID) or "Card payment not completed" on each enrolment. Refunds are done in the Square Dashboard; then set the enrolment's payment status to **Refunded**.
 
 ## Academy portal (`/portal`)
 

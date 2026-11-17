@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import { Check, CheckCircle2, ChevronLeft, ChevronRight, Copy, FileText, Loader2, Upload, X } from "lucide-react";
+import { Check, CheckCircle2, ChevronLeft, ChevronRight, Copy, FileText, Loader2, Lock, Upload, X } from "lucide-react";
 import {
   advancedSession,
   bankDetails,
@@ -102,12 +102,13 @@ function BankDetails({ playerName }: { playerName: string }) {
   );
 }
 
-export function EnrolmentForm({ prefill }: { prefill?: { name: string; email: string; phone: string } }) {
+export function EnrolmentForm({ prefill, cardEnabled = false }: { prefill?: { name: string; email: string; phone: string }; cardEnabled?: boolean }) {
   const [v, setV] = useState<EnrolmentInput>(emptyEnrolment);
   const [step, setStep] = useState(0);
   const [errors, setErrors] = useState<Errors>({});
   const [uploads, setUploads] = useState<UploadItem[]>([]);
   const [submitting, setSubmitting] = useState(false);
+  const [redirecting, setRedirecting] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
   const [result, setResult] = useState<Extract<SubmitResult, { ok: true }> | null>(null);
   const [website, setWebsite] = useState("");
@@ -163,7 +164,10 @@ export function EnrolmentForm({ prefill }: { prefill?: { name: string; email: st
   const { planId, sessions, price } = useMemo(() => normalise(v), [v]);
   const plan = plans.find((p) => p.id === planId);
   const age = ageOn(v.player.dob);
-  const method = paymentMethods.find((m) => m.id === v.paymentMethod);
+  const cardAvailable = cardEnabled && v.program !== "trial" && !!price?.total;
+  const availableMethods = paymentMethods.filter((m) => m.id !== "card" || cardAvailable);
+  const method = availableMethods.find((m) => m.id === v.paymentMethod);
+  const isCard = method?.id === "card";
 
   const scrollTop = () => topRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
 
@@ -212,6 +216,15 @@ export function EnrolmentForm({ prefill }: { prefill?: { name: string; email: st
     setSubmitting(true);
     setFormError(null);
     const res = await submitEnrolment({ ...v, website }).catch(() => ({ ok: false, error: "Something went wrong. Please try again." }) as SubmitResult);
+    if (res.ok && res.checkoutUrl) {
+      // Card: go to Square's secure checkout. Square sends the parent back to /academy/enrol/complete.
+      try {
+        localStorage.removeItem(DRAFT_KEY);
+      } catch {}
+      setRedirecting(true);
+      window.location.href = res.checkoutUrl;
+      return;
+    }
     setSubmitting(false);
     if (res.ok) {
       setResult(res);
@@ -509,7 +522,11 @@ export function EnrolmentForm({ prefill }: { prefill?: { name: string; email: st
             <div className="space-y-6">
               <div>
                 <h2 className="text-2xl font-bold">Payment</h2>
-                <p className="mt-1 text-sm text-zinc-400">Complete payment, then upload your receipt or PlayOn voucher before submitting.</p>
+                <p className="mt-1 text-sm text-zinc-400">
+                  {cardAvailable
+                    ? "Pay securely by card now, or pay by bank transfer / PlayOn voucher and upload your receipt."
+                    : "Complete payment, then upload your receipt or PlayOn voucher before submitting."}
+                </p>
               </div>
 
               <div className="rounded-xl border border-brand/40 bg-brand/5 p-4">
@@ -519,7 +536,7 @@ export function EnrolmentForm({ prefill }: { prefill?: { name: string; email: st
               </div>
 
               <Field label="Payment method" required error={errors.paymentMethod}>
-                <Select value={v.paymentMethod} onChange={(val) => set("paymentMethod", val as EnrolmentInput["paymentMethod"])} placeholder="Choose…" options={paymentMethods.map((m) => ({ value: m.id, label: m.label }))} error={errors.paymentMethod} />
+                <Select value={v.paymentMethod} onChange={(val) => set("paymentMethod", val as EnrolmentInput["paymentMethod"])} placeholder="Choose…" options={availableMethods.map((m) => ({ value: m.id, label: m.label }))} error={errors.paymentMethod} />
               </Field>
 
               {(v.paymentMethod === "bank" || v.paymentMethod === "playon-bank") && (
@@ -536,6 +553,7 @@ export function EnrolmentForm({ prefill }: { prefill?: { name: string; email: st
                 </Field>
               )}
 
+              {!isCard && (
               <div>
                 <p className="text-sm font-medium text-zinc-200">
                   Upload payment receipt / PlayOn voucher <span className="text-brand-300">*</span>
@@ -577,6 +595,17 @@ export function EnrolmentForm({ prefill }: { prefill?: { name: string; email: st
                 )}
                 {errors.files && <p className="mt-2 text-sm text-red-300">{errors.files}</p>}
               </div>
+              )}
+
+              {isCard && (
+                <div className="flex items-start gap-3 rounded-xl border border-line bg-ink p-4 text-sm text-zinc-300">
+                  <Lock className="mt-0.5 h-4 w-4 shrink-0 text-emerald-400" aria-hidden="true" />
+                  <p>
+                    After you submit, you&apos;ll go to Square&apos;s secure checkout to pay {price?.total != null ? money(price.total) : ""} by card, Apple Pay or Google Pay.
+                    Your card details never touch our website. You&apos;ll come straight back here once payment is done.
+                  </p>
+                </div>
+              )}
 
               <div className="rounded-xl border border-line bg-ink p-4">
                 <p className="text-sm font-medium text-white">Important notes</p>
@@ -619,7 +648,8 @@ export function EnrolmentForm({ prefill }: { prefill?: { name: string; email: st
                 disabled={submitting}
                 className="inline-flex items-center gap-2 rounded-full bg-brand px-6 py-3 font-display text-sm font-semibold uppercase tracking-wider text-white hover:bg-brand-600 disabled:opacity-60"
               >
-                {submitting && <Loader2 className="h-4 w-4 animate-spin" />} {submitting ? "Submitting…" : "Submit enrolment"}
+                {submitting && <Loader2 className="h-4 w-4 animate-spin" />}{" "}
+                {redirecting ? "Opening secure payment…" : submitting ? "Submitting…" : isCard ? "Continue to secure payment" : "Submit enrolment"}
               </button>
             )}
           </div>

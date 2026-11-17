@@ -143,9 +143,11 @@ export async function sendEnrolmentReceived(e: {
   totalCents: number | null;
   discountCents: number;
   paymentMethod: string;
+  /** Card payment already confirmed by Square. */
+  paid?: boolean;
   origin: string;
 }) {
-  const method = paymentMethods.find((m) => m.id === e.paymentMethod)?.label ?? e.paymentMethod;
+  const method = e.paid ? "Paid by card ✓" : (paymentMethods.find((m) => m.id === e.paymentMethod)?.label ?? e.paymentMethod);
   const total = e.totalCents == null ? "To be confirmed by our team" : money(e.totalCents);
   const details = [
     `<strong>Reference:</strong> ${escape(e.reference)}`,
@@ -162,7 +164,9 @@ export async function sendEnrolmentReceived(e: {
     layout("We've received your enrolment", [
       `Hi ${escape(e.parentName.split(" ")[0] || "there")}, thanks for enrolling ${escape(e.playerName)} in ${escape(enrolmentTerm.name)} group training.`,
       details,
-      "Our team will check your payment and confirm the final session placement by email. Preferred sessions are subject to availability.",
+      e.paid
+        ? "We've received your payment. Our team will confirm the final session placement by email. Preferred sessions are subject to availability."
+        : "Our team will check your payment and confirm the final session placement by email. Preferred sessions are subject to availability.",
       `Questions? Reply to this email or call ${escape(site.contact.phones[0].display)}, quoting your reference.`,
     ]),
   );
@@ -170,7 +174,7 @@ export async function sendEnrolmentReceived(e: {
   const notify = process.env.ACADEMY_NOTIFY_EMAIL ?? site.contact.email;
   await send(
     notify,
-    `New enrolment: ${e.playerName} – ${e.plan || e.program} (${e.reference})`,
+    `New enrolment${e.paid ? " (paid by card)" : ""}: ${e.playerName} – ${e.plan || e.program} (${e.reference})`,
     layout("New academy enrolment", [`Parent: ${escape(e.parentName)} &lt;${escape(e.parentEmail)}&gt;`, details], {
       label: "Review in admin",
       url: `${e.origin}/portal/admin/enrolments`,
