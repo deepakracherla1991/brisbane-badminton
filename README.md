@@ -68,6 +68,25 @@ The site can be installed on phones as an app (a Progressive Web App), with no a
 
 Every website update is in the app straight away.
 
+## Academy enrolment form (`/academy/enrol`)
+
+Replaces the Google Form and Google Sheet for term group-training enrolments. Every "Enrol now" button on the site opens it, and no account is needed. It has four steps:
+
+1. **Program**: dropdowns for Program (Kids Group Training / Advanced Squad / Trial Lesson) and Training plan, preferred sessions (full classes can't be picked; the plan sets the minimum number of sessions a week), and the family (sibling) discount.
+2. **Player**: name, date of birth (age is calculated), gender, playing level, experience, medical notes, and how they heard about us.
+3. **Parent / guardian**: name, mobile, email, emergency contact and suburb. Pre-filled for signed-in portal users.
+4. **Payment**: the total (worked out on the server), payment method (bank transfer / PlayOn / both), bank details with copy buttons and the payment reference, PlayOn voucher number, receipt upload (photos or PDF, up to 5 files of 10 MB each, stored privately), and agreement to the important notes.
+
+After submitting, the parent gets a reference such as `BB-T4-K7Q2M` and an email copy, and the academy inbox gets a notification (`ACADEMY_NOTIFY_EMAIL`, default `admin@badmintonbrisbane.com.au`). Drafts are saved in the browser, so parents can come back to finish. "Enrol a sibling" starts a new form with the parent details and the next sibling discount already filled in.
+
+**Staff** see submissions under **Portal → Enrolments**: filter by status and term, search, view details and receipts, set the enrolment status (New / Confirmed / Waitlisted / Declined / Cancelled) and payment status, add staff notes, optionally email the parent, and **Export CSV** for Excel or Google Sheets.
+
+**Each term**, edit `src/content/enrolment.ts`: term name and dates, sessions (and whether each is open, limited or full), plans and prices, discounts, bank details and important notes. Set `enrolmentTerm.open = false` to close enrolments.
+
+**Setup:** run `supabase/migrations/0002_enrolment_form.sql` in the Supabase SQL editor (after `0001`). It creates the `enrolment_applications` table and the private `enrolment-uploads` storage bucket with their access rules.
+
+**Card payments (later):** the payment step is built so a card option (e.g. Stripe Checkout) can be added as another payment method. `card` is already an allowed `payment_method` in the database.
+
 ## Academy portal (`/portal`)
 
 Customers create an account, add students (a parent can add several children), browse the open term's classes and enrol, or join the waitlist when a class is full. They can see their enrolments and payment status, and withdraw. Staff with the **admin** role manage terms and classes, see each class roster with parent contact details, mark payments, and withdraw students. When a place frees up (someone withdraws, or capacity is raised), the first person on the waitlist is enrolled automatically and emailed.

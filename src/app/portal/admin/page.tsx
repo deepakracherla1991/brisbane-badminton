@@ -49,14 +49,22 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
           <p className="eyebrow mb-2">Admin</p>
           <h1 className="text-4xl font-bold">Academy classes</h1>
         </div>
-        {term && (
+        <div className="flex flex-wrap gap-2">
           <Link
-            href={`/portal/admin/classes/new?term=${term.id}`}
-            className="inline-flex items-center gap-2 rounded-full bg-brand px-5 py-2.5 font-display text-sm font-semibold uppercase tracking-wider text-white hover:bg-brand-600"
+            href="/portal/admin/enrolments"
+            className="inline-flex items-center gap-2 rounded-full border border-white/25 px-5 py-2.5 font-display text-sm font-semibold uppercase tracking-wider text-white hover:bg-white/5"
           >
-            <Plus className="h-4 w-4" aria-hidden="true" /> New class
+            Enrolment forms
           </Link>
-        )}
+          {term && (
+            <Link
+              href={`/portal/admin/classes/new?term=${term.id}`}
+              className="inline-flex items-center gap-2 rounded-full bg-brand px-5 py-2.5 font-display text-sm font-semibold uppercase tracking-wider text-white hover:bg-brand-600"
+            >
+              <Plus className="h-4 w-4" aria-hidden="true" /> New class
+            </Link>
+          )}
+        </div>
       </div>
 
       {/* Terms */}

@@ -8,6 +8,8 @@ import { WithdrawButton } from "@/components/portal/WithdrawButton";
 import { ButtonLink } from "@/components/ui";
 import { site } from "@/content/site";
 import type { AcademyClass, Enrolment, Student, Term } from "@/lib/portal/types";
+import { plans } from "@/content/enrolment";
+import { PAYMENT_LABELS, STATUS_LABELS, statusClass, type Application } from "@/lib/enrolment/types";
 
 type Row = Enrolment & {
   students: Pick<Student, "id" | "full_name">;
@@ -58,7 +60,7 @@ export default async function PortalHome() {
   if (!profile) return <Landing />;
 
   const supabase = await createClient();
-  const [{ data: students }, { data: rows }] = await Promise.all([
+  const [{ data: students }, { data: rows }, { data: forms }] = await Promise.all([
     supabase.from("students").select("id, full_name").eq("owner_id", profile.id).order("created_at"),
     supabase
       .from("enrolments")
@@ -67,6 +69,13 @@ export default async function PortalHome() {
       .neq("status", "withdrawn")
       .order("created_at")
       .returns<Row[]>(),
+    supabase
+      .from("enrolment_applications")
+      .select("id, reference, term, player_name, plan, program, status, payment_status, total_cents, created_at")
+      .eq("user_id", profile.id)
+      .order("created_at", { ascending: false })
+      .limit(20)
+      .returns<Pick<Application, "id" | "reference" | "term" | "player_name" | "plan" | "program" | "status" | "payment_status" | "total_cents" | "created_at">[]>(),
   ]);
 
   const today = new Date().toISOString().slice(0, 10);
@@ -112,6 +121,31 @@ export default async function PortalHome() {
           </h2>
           <p className="mt-1 text-sm text-zinc-300">{site.academy.paymentInstructions}</p>
         </div>
+      )}
+
+      {!!forms?.length && (
+        <section>
+          <h2 className="mb-4 text-2xl font-bold">Group training enrolments</h2>
+          <ul className="space-y-3">
+            {forms.map((f) => (
+              <li key={f.id} className="card flex flex-col gap-2 p-5 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                  <p className="font-bold text-white">
+                    {f.player_name} · {plans.find((p) => p.id === f.plan)?.name ?? (f.program === "trial" ? "Trial lesson" : "Group training")}
+                  </p>
+                  <p className="text-sm text-zinc-400">
+                    {f.term} · Ref <span className="font-mono">{f.reference}</span>
+                    {f.total_cents != null && ` · ${formatPrice(f.total_cents)}`}
+                  </p>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  <span className={`rounded-full px-2.5 py-0.5 text-xs font-semibold ${statusClass(f.status)}`}>{STATUS_LABELS[f.status]}</span>
+                  <span className="rounded-full bg-white/10 px-2.5 py-0.5 text-xs text-zinc-300">{PAYMENT_LABELS[f.payment_status]}</span>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </section>
       )}
 
       <section>

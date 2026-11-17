@@ -12,9 +12,19 @@ export function PortalNav({ name, isAdmin }: { name: string; isAdmin: boolean })
     { href: "/portal/classes", label: "Enrol" },
     { href: "/portal/students", label: "Students" },
     { href: "/portal/account", label: "Account" },
-    ...(isAdmin ? [{ href: "/portal/admin", label: "Admin" }] : []),
+    ...(isAdmin
+      ? [
+          { href: "/portal/admin/enrolments", label: "Enrolments" },
+          { href: "/portal/admin", label: "Admin" },
+        ]
+      : []),
   ];
-  const active = (href: string) => (href === "/portal" ? pathname === "/portal" : pathname.startsWith(href));
+  const active = (href: string) =>
+    href === "/portal"
+      ? pathname === "/portal"
+      : href === "/portal/admin"
+        ? pathname.startsWith(href) && !pathname.startsWith("/portal/admin/enrolments")
+        : pathname.startsWith(href);
 
   return (
     <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
