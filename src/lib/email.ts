@@ -1,6 +1,7 @@
 import "server-only";
 import { Resend } from "resend";
 import { site } from "@/content/site";
+import { enrolmentTerm, paymentMethods } from "@/content/enrolment";
 
 const apiKey = process.env.RESEND_API_KEY;
 const from = process.env.EMAIL_FROM ?? `${site.name} <onboarding@resend.dev>`;
@@ -86,5 +87,97 @@ export async function sendPromotedEmails(promotions: { email: string; student_na
         ),
       ),
     ),
+  );
+}
+
+const money = (cents: number) => `$${(cents / 100).toLocaleString("en-AU", { minimumFractionDigits: cents % 100 ? 2 : 0 })}`;
+
+/** Enrolment form: tells the parent their enrolment was confirmed, waitlisted, declined or cancelled. */
+export async function sendEnrolmentStatus(e: {
+  to: string;
+  parentName: string;
+  playerName: string;
+  reference: string;
+  status: "confirmed" | "waitlisted" | "declined" | "cancelled";
+  sessions: string[];
+}) {
+  const hi = `Hi ${escape(e.parentName.split(" ")[0] || "there")},`;
+  const content = {
+    confirmed: {
+      title: "Enrolment confirmed!",
+      body: [
+        `${hi} ${escape(e.playerName)}'s place in ${escape(enrolmentTerm.name)} group training is confirmed.`,
+        `<strong>Sessions:</strong><br>${e.sessions.map(escape).join("<br>")}`,
+        "Please bring non-marking shoes and a water bottle. See you on court!",
+      ],
+    },
+    waitlisted: {
+      title: "You're on the waitlist",
+      body: [`${hi} the sessions you chose for ${escape(e.playerName)} are currently full, so we've added them to the waitlist. We'll be in touch as soon as a place opens up.`],
+    },
+    declined: {
+      title: "About your enrolment",
+      body: [`${hi} unfortunately we couldn't offer ${escape(e.playerName)} a place in the sessions requested this term. Our team will contact you about other options and any refund.`],
+    },
+    cancelled: {
+      title: "Enrolment cancelled",
+      body: [`${hi} ${escape(e.playerName)}'s enrolment for ${escape(enrolmentTerm.name)} has been cancelled. If this is unexpected, please contact us.`],
+    },
+  }[e.status];
+  await send(
+    e.to,
+    `${content.title.replace("!", "")}: ${e.playerName} (${e.reference})`,
+    layout(content.title, [...content.body, `Reference: ${escape(e.reference)}. Questions? Call ${escape(site.contact.phones[0].display)}.`]),
+  );
+}
+
+/** Enrolment form: confirmation to the parent, and a notice to the academy inbox. */
+export async function sendEnrolmentReceived(e: {
+  reference: string;
+  parentEmail: string;
+  parentName: string;
+  playerName: string;
+  program: string;
+  plan: string;
+  sessions: string[];
+  totalCents: number | null;
+  discountCents: number;
+  paymentMethod: string;
+  /** Card payment already confirmed by Square. */
+  paid?: boolean;
+  origin: string;
+}) {
+  const method = e.paid ? "Paid by card ✓" : (paymentMethods.find((m) => m.id === e.paymentMethod)?.label ?? e.paymentMethod);
+  const total = e.totalCents == null ? "To be confirmed by our team" : money(e.totalCents);
+  const details = [
+    `<strong>Reference:</strong> ${escape(e.reference)}`,
+    `<strong>Player:</strong> ${escape(e.playerName)}`,
+    `<strong>Program:</strong> ${escape(e.program)}${e.plan ? ` · ${escape(e.plan)}` : ""}`,
+    `<strong>Preferred sessions:</strong><br>${e.sessions.map(escape).join("<br>")}`,
+    `<strong>Total:</strong> ${escape(total)}${e.discountCents ? ` (family discount ${money(e.discountCents)} applied)` : ""}`,
+    `<strong>Payment method:</strong> ${escape(method)}`,
+  ].join("<br>");
+
+  await send(
+    e.parentEmail,
+    `Enrolment received: ${e.playerName} – ${enrolmentTerm.name} (${e.reference})`,
+    layout("We've received your enrolment", [
+      `Hi ${escape(e.parentName.split(" ")[0] || "there")}, thanks for enrolling ${escape(e.playerName)} in ${escape(enrolmentTerm.name)} group training.`,
+      details,
+      e.paid
+        ? "We've received your payment. Our team will confirm the final session placement by email. Preferred sessions are subject to availability."
+        : "Our team will check your payment and confirm the final session placement by email. Preferred sessions are subject to availability.",
+      `Questions? Reply to this email or call ${escape(site.contact.phones[0].display)}, quoting your reference.`,
+    ]),
+  );
+
+  const notify = process.env.ACADEMY_NOTIFY_EMAIL ?? site.contact.email;
+  await send(
+    notify,
+    `New enrolment${e.paid ? " (paid by card)" : ""}: ${e.playerName} – ${e.plan || e.program} (${e.reference})`,
+    layout("New academy enrolment", [`Parent: ${escape(e.parentName)} &lt;${escape(e.parentEmail)}&gt;`, details], {
+      label: "Review in admin",
+      url: `${e.origin}/portal/admin/enrolments`,
+    }),
   );
 }

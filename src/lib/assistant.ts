@@ -1,4 +1,5 @@
 import { coaches, site } from "@/content/site";
+import { advancedSession, enrolmentTerm, kidsSessions, plans } from "@/content/enrolment";
 
 import { ASSISTANT_NAME } from "./assistant-config";
 
@@ -64,7 +65,14 @@ ${rates}
 
 # Academy (${page("/academy")})
 ${list(site.academy.points)}
-Enrol online in the academy portal (${page("/portal/classes")}): create an account, add students (parents can add their children), then enrol or join the waitlist if a class is full. The portal shows current class times, coaches, fees and spots left. Payment: ${site.academy.paymentInstructions}
+To enrol in group training, use the online enrolment form (${page("/academy/enrol")}). No account is needed. ${enrolmentTerm.name} runs ${enrolmentTerm.dates}. Each lesson is 2 hours, with about 4–6 students per coach.
+Kids group sessions:
+${list(kidsSessions.map((s) => `${s.day} ${s.time}: ${s.level}${s.status === "full" ? " (full)" : s.status === "limited" ? " (limited spots)" : ""}`))}
+Advanced Squad (invite only): ${advancedSession.day} ${advancedSession.time}.
+Training plans:
+${list(plans.map((p) => `${p.name}: $${p.priceCents / 100} (${p.summary})`))}
+Family discount: second child $25 off and third child or more $50 off per term, on the Foundation Plan and above (not Starter, trial lessons, holiday camps or other offers).
+Payment is by bank transfer or PlayOn voucher, and the receipt is uploaded on the form. Makeup lessons need 24 hours' notice by email, max 2 per term, within the same term. Non-marking shoes are required.
 Over 100 active academy members. Individual player assessments help place new players in the right group. PlayOn vouchers are accepted.
 Programs:
 ${programs}

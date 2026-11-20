@@ -47,7 +47,8 @@ export const site = {
     // TODO: replace with the real online court-booking URL.
     /** Online court booking (YepBooking). */
     bookCourt: "https://badmintonbrisbane.yepbooking.com.au/",
-    academyEnrol: "/portal/classes",
+    /** Academy enrolment form. */
+    academyEnrol: "/academy/enrol",
     portal: "/portal",
     // TODO: replace with the club registration form URL.
     clubJoin: "/club#join",

@@ -68,6 +68,44 @@ The site can be installed on phones as an app (a Progressive Web App), with no a
 
 Every website update is in the app straight away.
 
+## Academy enrolment form (`/academy/enrol`)
+
+Replaces the Google Form and Google Sheet for term group-training enrolments. Every "Enrol now" button on the site opens it, and no account is needed. It has four steps:
+
+1. **Program**: dropdowns for Program (Kids Group Training / Advanced Squad / Trial Lesson) and Training plan, preferred sessions (full classes can't be picked; the plan sets the minimum number of sessions a week), and the family (sibling) discount.
+2. **Player**: name, date of birth (age is calculated), gender, playing level, experience, medical notes, and how they heard about us.
+3. **Parent / guardian**: name, mobile, email, emergency contact and suburb. Pre-filled for signed-in portal users.
+4. **Payment**: the total (worked out on the server), payment method (bank transfer / PlayOn / both), bank details with copy buttons and the payment reference, PlayOn voucher number, receipt upload (photos or PDF, up to 5 files of 10 MB each, stored privately), and agreement to the important notes.
+
+After submitting, the parent gets a reference such as `BB-T4-K7Q2M` and an email copy, and the academy inbox gets a notification (`ACADEMY_NOTIFY_EMAIL`, default `admin@badmintonbrisbane.com.au`). Drafts are saved in the browser, so parents can come back to finish. "Enrol a sibling" starts a new form with the parent details and the next sibling discount already filled in.
+
+**Staff** see submissions under **Portal → Enrolments**: filter by status and term, search, view details and receipts, set the enrolment status (New / Confirmed / Waitlisted / Declined / Cancelled) and payment status, add staff notes, optionally email the parent, and **Export CSV** for Excel or Google Sheets.
+
+**Each term**, edit `src/content/enrolment.ts`: term name and dates, sessions (and whether each is open, limited or full), plans and prices, discounts, bank details and important notes. Set `enrolmentTerm.open = false` to close enrolments.
+
+**Setup:** run `supabase/migrations/0002_enrolment_form.sql` in the Supabase SQL editor (after `0001`). It creates the `enrolment_applications` table and the private `enrolment-uploads` storage bucket with their access rules.
+
+### Card payments with Square
+
+When Square is set up, the payment step offers **Pay by card now** (Visa, Mastercard, Apple Pay, Google Pay):
+
+1. The parent submits the form. The site creates a Square-hosted checkout page for the exact total (calculated on the server) and saves the enrolment with its Square order ID.
+2. The parent pays on Square's secure page. Card details never touch this website.
+3. Square sends them back to `/academy/enrol/complete`. The server asks Square whether the order was actually paid, then marks the enrolment **Payment verified** and sends the confirmation emails (once).
+4. The webhook `/api/square/webhook` does the same check, so payments are recorded even if the parent closes the tab before returning.
+
+Bank transfer and PlayOn still work as before, with receipt upload. Trial lessons have no fixed price yet, so card payment isn't offered for them.
+
+**Setup**
+
+1. Run `supabase/migrations/0003_square_payments.sql` in the Supabase SQL editor.
+2. In the [Square Developer Console](https://developer.squareup.com/apps), create an application. From **Credentials**, copy the **Access token** into `SQUARE_ACCESS_TOKEN`. From **Locations**, copy your location ID into `SQUARE_LOCATION_ID`. Start with the **Sandbox** credentials and `SQUARE_ENVIRONMENT=sandbox`, and test with Square's sandbox test cards.
+3. Add your Supabase **secret key** (Project Settings → API Keys → Secret keys) as `SUPABASE_SECRET_KEY`. It's used only on the server, to record confirmed payments.
+4. Webhook (recommended): in the Square app, open **Webhooks → Subscriptions → Add**. Set the URL to `https://<your domain>/api/square/webhook` and choose the events `payment.created` and `payment.updated`. Put the same URL in `SQUARE_WEBHOOK_URL` and the subscription's **Signature key** in `SQUARE_WEBHOOK_SIGNATURE_KEY`.
+5. Add the same variables in Vercel (Settings → Environment Variables) and redeploy. To go live, switch to the **Production** access token and location, and set `SQUARE_ENVIRONMENT=production`.
+
+Staff see "Paid by card" (with the Square payment ID) or "Card payment not completed" on each enrolment. Refunds are done in the Square Dashboard; then set the enrolment's payment status to **Refunded**.
+
 ## Academy portal (`/portal`)
 
 Customers create an account, add students (a parent can add several children), browse the open term's classes and enrol, or join the waitlist when a class is full. They can see their enrolments and payment status, and withdraw. Staff with the **admin** role manage terms and classes, see each class roster with parent contact details, mark payments, and withdraw students. When a place frees up (someone withdraws, or capacity is raised), the first person on the waitlist is enrolled automatically and emailed.
